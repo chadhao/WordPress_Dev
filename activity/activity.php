@@ -29,18 +29,10 @@ require_once( ACTIVITY__PLUGIN_DIR . 'class.activity.php' );
 
 add_action( 'init', array( 'Activity', 'init' ) );
 
-function activity_install() {
-	$terms = get_terms( 'category', 'orderby=id&hide_empty=0' );
-	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-		update_option( 'activity_category', $terms[0]->name );
-	} else {
-		update_option( 'activity_category', 'Undefined' );
-	}
-}
+add_action( 'activated_plugin', 'my_save_error' );
 
-function activity_uninstall() {
-	delete_option( 'activity_category' );
+function my_save_error() {
+	file_put_contents( ACTIVITY__PLUGIN_DIR . 'error_activation.txt', ob_get_contents() );
 }
-
 
 ?>
