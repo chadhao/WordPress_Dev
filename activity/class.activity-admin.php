@@ -24,7 +24,7 @@ class Activity_Admin {
 	}
 	
 	public static function activity_admin_page() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] == 'activity_admin_setting_modify' )
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'activity_admin_setting_modify' )
 		{
 			self::activity_admin_setting_modify();
 		} else {
@@ -32,14 +32,15 @@ class Activity_Admin {
 		}
 	}
 	
-	public static function activity_admin_get_url( $page ) {
-		$args = array( 'page' => $page, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+	public static function activity_admin_get_url( $action ) {
+		$args = array( 'page' => 'activity_admin', 'action' => $action, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		$url = add_query_arg( $args, admin_url( 'admin.php' ) );
 		return $url;
 	}
 	
 	public static function activity_admin_setting_modify() {
 		echo '<h1>here i am in activity_admin_setting_modify</h1>';
+		echo '<h1>' . wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) . '</h1>';
 	}
 	
 	public static function activity_admin_display_activity() {
