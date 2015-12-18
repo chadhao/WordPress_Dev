@@ -29,6 +29,11 @@ require_once( ACTIVITY__PLUGIN_DIR . 'class.activity.php' );
 
 add_action( 'init', array( 'Activity', 'activity_init' ) );
 
+if ( is_admin() ) {
+	require_once( ACTIVITY__PLUGIN_DIR . 'class.activity-admin.php' );
+	add_action( 'init', array( 'Activity_Admin', 'activity_admin_init' ) );
+}
+
 // Code blow enables debug message output during plugin activation.
 add_action( 'activated_plugin', 'my_save_error' );
 function my_save_error() {

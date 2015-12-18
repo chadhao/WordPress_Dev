@@ -46,6 +46,11 @@ class Activity {
 		
 	}
 	
+	/**
+	 * Determining if required table exists
+	 * @global type $wpdb
+	 * @return boolean
+	 */
 	private static function activity_is_table_created() {
 		global $wpdb;
 		$activity_table_dbname = DB_NAME;
