@@ -68,7 +68,7 @@ function pp_page() {
 		<tr><th scope="row"><label for="post_category">Cetegory</label></th>
 		<td>
 		<select name="post_category" id="post_category">
-		';
+	';
 	foreach ( $all_terms as $term ) {
 		echo '<option value="' . $term->term_id . '">' . $term->name . '</option>';
 	}
@@ -88,9 +88,9 @@ function pp_page() {
 
 function pp_random_part( $len ) {
 	$chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    $result = '';
-    for ($i = 0; $i < $len; $i++) {
-        $result .= $chars[mt_rand(0, 61)];
+	$result = '';
+	for ($i = 0; $i < $len; $i++) {
+		$result .= $chars[mt_rand(0, 61)];
 	}
 	return $result;
 }
