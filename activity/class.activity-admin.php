@@ -20,13 +20,13 @@ class Activity_Admin {
 	public static function activity_admin_load_menu() {
 		add_menu_page( '活动列表', '活动', 'edit_posts', 'activity_admin', array( 'Activity_Admin', 'activity_admin_page' ), 'dashicons-carrot', 6 );
 		add_submenu_page( 'activity_admin', '活动列表', '活动列表', 'edit_posts', 'activity_admin', array( 'Activity_Admin', 'activity_admin_page' ) );
-		add_submenu_page( 'activity_admin', '活动设置', '活动设置', 'edit_posts', 'activity_admin_setting', array( 'Activity_Admin', 'activity_admin_display_setting' ) );
+		add_submenu_page( 'activity_admin', '活动设置', '活动设置', 'edit_posts', 'activity_admin_setting', array( 'Activity_Admin', 'activity_admin_setting' ) );
 	}
 	
 	public static function activity_admin_page() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'activity_admin_setting_modify' )
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'activity_admin_setting' )
 		{
-			self::activity_admin_setting_modify();
+			self::activity_admin_setting();
 		} else {
 			self::activity_admin_display_activity();
 		}
@@ -38,9 +38,28 @@ class Activity_Admin {
 		return $url;
 	}
 	
-	public static function activity_admin_setting_modify() {
-		echo '<h1>here i am in activity_admin_setting_modify</h1>';
-		echo '<h1>' . wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) . '</h1>';
+	public static function activity_admin_term_exists( $term ) {
+		$all_terms = get_terms( 'category', 'orderby=id&hide_empty=0' );
+		foreach ( $all_terms as $a_term ) {
+			if ( $a_term->term_id == $term )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static function activity_admin_message( $type, $msg ) {
+		if ( $type == 'error' ) {
+			echo '<div class="error"><p>' . $msg . '</p></div>'; 
+		} else {
+			echo '<div class="updated"><p>' . $msg . '</p></div>';
+		}
+	}
+	
+	public static function activity_admin_display_message( $type, $msg ) {
+		add_action( 'admin_notice', array( 'Activity_Admin', 'activity_admin_message' ), 10, 2 );
+		do_action( 'admin_notice', $type, $msg);
 	}
 	
 	public static function activity_admin_display_activity() {
@@ -51,30 +70,42 @@ class Activity_Admin {
 		';
 	}
 	
-	public static function activity_admin_display_setting() {
+	public static function activity_admin_setting() {
+		
+		if ( isset($_GET['_wpnonce']) ) {
+			if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) && isset( $_POST['activity_category'] ) && self::activity_admin_term_exists( $_POST['activity_category'] ) ) {
+				update_option( 'activity_category', $_POST['activity_category'] );
+				self::activity_admin_display_message( 'updated', '活动分类更新成功！' );
+			} else {
+				self::activity_admin_display_message( 'error', '非法请求！' );
+			}
+		}
+		
 		$all_terms = get_terms( 'category', 'orderby=id&hide_empty=0' );
 		$current_category = get_option( 'activity_category' );
 		echo '
 			<div class="wrap">
-			<h1>Activity Settings</h1>
-			<form name="activity_admin_setting" id="activity_admin_setting" method="post" action="' . esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_setting_modify' ) ) . '">
+			<h1>活动设置</h1>
+			<form name="activity_admin_setting" id="activity_admin_setting" method="post" action="' . esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_setting' ) ) . '">
 				
 			<table class="form-table">
 			<tr>
 			<th scope="row"><label for="activity_category">活动分类</label></th>
 			<td>
-			<select name="activity_category" id="activity_category">';
-			foreach ( $all_terms as $term ) {
-				echo '<option value="' . $term->name . '"';
-				if ( $term->term_id == $current_category )
-				{
-					echo ' selected="selected">';
-				} else {
-					echo '>';
-				}
-				echo $term->name . '</option>';
+			<select name="activity_category" id="activity_category">
+		';
+		foreach ( $all_terms as $term ) {
+			echo '<option value="' . $term->term_id . '"';
+			if ( $term->term_id == $current_category )
+			{
+				echo ' selected="selected">';
+			} else {
+				echo '>';
 			}
-			echo '</select>
+			echo $term->name . '</option>';
+		}
+		echo '
+			</select>
 			<p class="description" id="activity_category-description">请选择一个分类作为活动分类。</p>
 			</td>
 			</tr>
