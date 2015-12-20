@@ -94,6 +94,10 @@ class Activity {
 	private static function activity_init_hooks() {
 		
 	}
+	
+	public static function activity_view( $file_name ) {
+		include( ACTIVITY__PLUGIN_DIR . 'views/' . $file_name . '.php' );
+	}
 }
 
 ?>

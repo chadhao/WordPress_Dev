@@ -63,11 +63,7 @@ class Activity_Admin {
 	}
 	
 	public static function activity_admin_display_activity() {
-		echo '
-			<div class="wrap">
-			<h1>activity list</h1>
-			</div>
-		';
+		Activity::activity_view( 'activity_admin_list' );
 	}
 	
 	public static function activity_admin_setting() {
@@ -116,10 +112,7 @@ class Activity_Admin {
 			</div>
 		';
 	}
-	
-	public static function activity_admin_change_activity_category() {
-		
-	}
+
 }
 
 ?>
