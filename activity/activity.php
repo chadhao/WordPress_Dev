@@ -37,7 +37,7 @@ if ( is_admin() ) {
 // Code blow enables debug message output during plugin activation.
 add_action( 'activated_plugin', 'my_save_error' );
 function my_save_error() {
-	file_put_contents( ACTIVITY__PLUGIN_DIR . 'error_activation.txt', ob_get_contents() );
+	file_put_contents( ACTIVITY__PLUGIN_DIR . 'error_activation.html', ob_get_contents() );
 }
 
 ?>
