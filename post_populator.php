@@ -3,7 +3,7 @@
 Plugin Name: Post Populator
 Plugin URI: http://www.autcsa.org.nz/
 Description: Populate posts for testing purpose.
-Version: 1.0.0
+Version: 1.0.1
 Author: Chad
 Author URI: http://www.chadhao.com/
 License: GPLv2 or later
@@ -54,8 +54,10 @@ function pp_page() {
 		if ( intval( $_POST['post_amount'] ) < 1 ) {
 			pp_display_message( 'error', 'Invalid amount!' );
 		} else {
+			$start_time = microtime(true);
 			pp_populate( intval( $_POST['post_category'] ), intval( $_POST['post_amount'] ) );
-			pp_display_message( 'updated', 'Random posts populated!' );
+			$end_time = microtime(true) - $start_time;
+			pp_display_message( 'updated', 'Random posts populated! Exec time: ' . $end_time . 's.');
 		}
 	}
 	
@@ -95,13 +97,9 @@ function pp_random_part( $len ) {
 	return $result;
 }
 
-function pp_random_string() {
-	return pp_random_part(5) . '-' . pp_random_part(5) . '-' . pp_random_part(5);
-}
-
 function pp_populate( $cat, $amount ) {
 	for ($i = 0; $i < $amount; $i++) {
-		$rand_post = pp_random_string();
+		$rand_post = pp_random_part(5) . '-' . pp_random_part(5) . '-' . pp_random_part(5);
 		$post = array(
 			'post_content'   => $rand_post,
 			'post_name'      => $rand_post,
