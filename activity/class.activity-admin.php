@@ -79,7 +79,16 @@ class Activity_Admin {
 		
 		Activity::activity_view( 'activity_admin_setting' );
 	}
-
+	
+	public static function activity_admin_delete_post() {
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'activity_admin_delete_post' && isset( $_GET['post_id'] ) ) {
+			if ( ! wp_delete_post( $_GET['post_id'] ) ) {
+				self::activity_admin_display_message( 'updated', '活动删除成功！' );
+			} else {
+				self::activity_admin_display_message( 'error', '删除活动失败！' );
+			}
+		}
+	}
 }
 
 ?>
