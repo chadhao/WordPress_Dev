@@ -24,16 +24,25 @@ class Activity_Admin {
 	}
 	
 	public static function activity_admin_page() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'activity_admin_setting' )
+		if ( isset( $_GET['action'] ) )
 		{
-			self::activity_admin_setting();
+			if ( $_GET['action'] == 'activity_admin_setting' ) {
+				self::activity_admin_setting();
+			} else if ( $_GET['action'] == 'activity_admin_delete_post' ) {
+				self::activity_admin_delete_post();
+			}
+			
 		} else {
 			self::activity_admin_display_activity();
 		}
 	}
 	
-	public static function activity_admin_get_url( $action ) {
-		$args = array( 'page' => 'activity_admin', 'action' => $action, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+	public static function activity_admin_get_url( $action, $post_id=0 ) {
+		if ( $action == 'activity_admin_delete_post' ) {
+			$args = array( 'page' => 'activity_admin', 'action' => $action, 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		} else {
+			$args = array( 'page' => 'activity_admin', 'action' => $action, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		}
 		$url = add_query_arg( $args, admin_url( 'admin.php' ) );
 		return $url;
 	}
@@ -81,13 +90,19 @@ class Activity_Admin {
 	}
 	
 	public static function activity_admin_delete_post() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'activity_admin_delete_post' && isset( $_GET['post_id'] ) ) {
-			if ( ! wp_delete_post( $_GET['post_id'] ) ) {
+		if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) && isset( $_GET['post_id'] ) ) {
+			$post_deleted = wp_delete_post( $_GET['post_id']);
+			echo '<h2>123 - ' . is_bool( $post_deleted ) . '</h2>';
+			if ( ! is_bool( $post_deleted ) ) {
 				self::activity_admin_display_message( 'updated', '活动删除成功！' );
 			} else {
 				self::activity_admin_display_message( 'error', '删除活动失败！' );
 			}
+		} else {
+			self::activity_admin_display_message( 'error', '非法请求！' );
 		}
+		
+		Activity::activity_view( 'activity_admin_list' );
 	}
 }
 
