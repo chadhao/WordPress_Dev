@@ -10,7 +10,7 @@ $activity_args = array(
 $all_activity = get_posts( $activity_args );
 ?>
 <div class="wrap">
-	<h1>活动列表 <a href="#" class="page-title-action">添加活动</a></h1>
+	<h1>活动列表 <a href="<?php echo esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_add_post' ) ); ?>" class="page-title-action">添加活动</a></h1>
 	<table class="am-table am-table-hover">
 		
 		<?php

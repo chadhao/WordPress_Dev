@@ -30,6 +30,8 @@ class Activity_Admin {
 				self::activity_admin_setting();
 			} else if ( $_GET['action'] == 'activity_admin_delete_post' ) {
 				self::activity_admin_delete_post();
+			} else if ( $_GET['action'] == 'activity_admin_post' ) {
+				self::activity_admin_post( $_GET['post_action'] );
 			}
 			
 		} else {
@@ -40,6 +42,10 @@ class Activity_Admin {
 	public static function activity_admin_get_url( $action, $post_id=0 ) {
 		if ( $action == 'activity_admin_delete_post' ) {
 			$args = array( 'page' => 'activity_admin', 'action' => $action, 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		} else if ( $action == 'activity_admin_add_post' ) {
+			$args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_post', 'post_action' => 'add', '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		} else if ( $action == 'activity_admin_edit_post' ) {
+			$args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_post', 'post_action' => 'edit', 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else {
 			$args = array( 'page' => 'activity_admin', 'action' => $action, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		}
@@ -103,6 +109,15 @@ class Activity_Admin {
 		}
 		
 		Activity::activity_view( 'activity_admin_list' );
+	}
+	
+	public static function activity_admin_post( $post_action ) {
+		if ( $post_action != 'add' && $post_action != 'edit' ) {
+			self::activity_admin_display_message( 'error', '非法请求！' );
+			Activity::activity_view( 'activity_admin_list' );
+		} else {
+			Activity::activity_view( 'activity_admin_post' );
+		}
 	}
 }
 
