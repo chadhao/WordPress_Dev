@@ -91,8 +91,8 @@ class Activity_Admin {
 	
 	public static function activity_admin_delete_post() {
 		if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) && isset( $_GET['post_id'] ) ) {
-			$post_deleted = wp_delete_post( $_GET['post_id']);
-			echo '<h2>123 - ' . is_bool( $post_deleted ) . '</h2>';
+			$post_deleted = wp_delete_post( $_GET['post_id'] );
+			echo '<h2>123 - ' . $post_deleted . '</h2>';
 			if ( ! is_bool( $post_deleted ) ) {
 				self::activity_admin_display_message( 'updated', '活动删除成功！' );
 			} else {

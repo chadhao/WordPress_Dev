@@ -51,6 +51,7 @@ class Activity {
 	 * @global type $wpdb
 	 * @return boolean
 	 */
+	/*
 	private static function activity_is_table_created( $activity_table_name ) {
 		global $wpdb;
 		$activity_table_dbname = DB_NAME;
@@ -62,6 +63,7 @@ class Activity {
 		}
 		return false;
 	}
+	*/
 	
 	/**
 	 * Initialize plugin database
@@ -96,18 +98,25 @@ class Activity {
 			signup_method varchar(2018) NOT NULL,
 			activity_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			poster varchar(255),
+			slide_pic boolean DEFAULT false NOT NULL,
+			slide_pic_file varchar(255),
 			CONSTRAINT pk_activity_meta_post_id PRIMARY KEY (post_id),
 			CONSTRAINT fk_activity_meta_post_id FOREIGN KEY (post_id) REFERENCES " . $activity_table_name_posts . "(ID)
 		) $activity_charset_collate;";
 		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		
+		dbDelta( $activity_meta_sql );
+		dbDelta( $activity_signup_sql );
+		
+		/*
 		if ( ! self::activity_is_table_created( $activity_table_name_meta ) ) {
 			dbDelta( $activity_meta_sql );
 		}
 		if ( ! self::activity_is_table_created( $activity_table_name_signup ) ) {
 			dbDelta( $activity_signup_sql );
 		}
+		*/
 	}
 
 	/**
