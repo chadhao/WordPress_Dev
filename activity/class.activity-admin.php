@@ -120,6 +120,10 @@ class Activity_Admin {
 			Activity::activity_view( 'activity_admin_post' );
 		}
 	}
+	
+	public static function activity_admin_process_post() {
+		
+	}
 }
 
 ?>

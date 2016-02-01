@@ -95,7 +95,7 @@ class Activity {
 			member_fee varchar(10),
 			nonmember_fee varchar(10),
 			signup_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			signup_method varchar(2018) NOT NULL,
+			signup_method varchar(2048) NOT NULL,
 			activity_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			poster varchar(255),
 			CONSTRAINT pk_activity_meta_post_id PRIMARY KEY (post_id),
