@@ -55,8 +55,12 @@ include 'style.php';
 			</div>
 			
 			<div class="am-form-group am-g">
-				<label for="poster">活动海报</label>
-				<input type="submit"><input type="file" name="poster">
+				<label for="poster_upload">活动海报</label>
+				<form class="am-form am-g" id="poster_upload" action="processupload.php" method="post" enctype="multipart/form-data">
+					<input name="poster_image" id="poster_image" type="file">
+					<button type="submit" id="poster_submit">上传</button>
+				</form>
+				<div id="poster_output" class=""></div>
 			</div>
 			
 		</fieldset>
