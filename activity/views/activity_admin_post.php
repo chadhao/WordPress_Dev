@@ -1,19 +1,23 @@
 <?php
 include 'style.php';
+
+$add_new = $_GET['post_action']=='add'?true:false;
+$post_id = $add_new?0:$_GET['post_id'];
+$the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 ?>
 
 <div class="wrap">
 	<form class="am-form" method="post" action="">
 		<fieldset>
-			
-			<legend><?php echo $_GET['post_action']=='add'?'添加活动':'编辑活动'; ?></legend>
-			
-			<input type="hidden" id="post_id" value="<?php echo $_GET['post_action']=='add'?'new':$_GET['post_id']; ?>">
-			
+
+			<legend><?php echo $add_new?'添加活动':'编辑活动'; ?></legend>
+
+			<input type="hidden" id="post_id" value="<?php echo $add_new?'new':$_GET['post_id']; ?>">
+
 			<div class="am-u-sm-6">
 				<div class="am-form-group am-g">
 					<label for="title">活动标题</label>
-					<input type="text" id="title" placeholder="请填写活动标题">
+					<input type="text" id="title" placeholder="请填写活动标题" value="<?php echo !$add_new?$the_post -> post_title:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
@@ -61,18 +65,18 @@ include 'style.php';
 					<input type="text" id="poster_image" placeholder="请上传活动海报，并填写海报URL">
 				</div>
 			</div>
-			
+
 			<div class="am-u-sm-6">
 				<div class="am-form-group am-g">
 					<label for="activity_detail">活动详情</label>
 					<?php
-					wp_editor( '', 'activity_detail' );
+					wp_editor( !$add_new?$the_post -> post_content:'', 'activity_detail' );
 					?>
 				</div>
-				
+
 				<p style="float: right;"><button type="submit" class="am-btn am-btn-primary am-radius">提交</button></p>
 			</div>
-			
+
 		</fieldset>
 	</form>
 </div>
