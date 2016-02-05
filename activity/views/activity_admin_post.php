@@ -14,7 +14,7 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 
 			<input type="hidden" id="post_id" value="<?php echo $add_new?'new':$_GET['post_id']; ?>">
 
-			<div class="am-u-sm-6">
+			<div class="am-g-collapse">
 				<div class="am-form-group am-g">
 					<label for="title">活动标题</label>
 					<input type="text" id="title" placeholder="请填写活动标题" value="<?php echo !$add_new?$the_post -> post_title:''; ?>">
@@ -28,7 +28,7 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 				<div class="am-form-group am-g">
 					<label for="activity_datetime">活动时间</label>
 					<div id="activity_datetime">
-						<span class="am-u-sm-6" style="padding-left: 0;"><input type="text" id="activity_date" placeholder="请选择活动日期" class="am-form-field" data-am-datepicker readonly></span>
+						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" id="activity_date" placeholder="请选择活动日期" class="am-form-field" data-am-datepicker readonly></span>
 						<select id="activity_time" data-am-selected="{maxHeight: 200}">
 							<?php for ( $i=0; $i<144; $i++) { echo '<option value="' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . ':00">' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . '</option>'; } ?>
 						</select>
@@ -48,7 +48,7 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 				<div class="am-form-group am-g">
 					<label for="signup_datetime">报名截止时间</label>
 					<div id="signup_datetime">
-						<span class="am-u-sm-6" style="padding-left: 0;"><input type="text" id="signup_date" placeholder="请选择报名截止日期" class="am-form-field" data-am-datepicker readonly></span>
+						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" id="signup_date" placeholder="请选择报名截止日期" class="am-form-field" data-am-datepicker readonly></span>
 						<select id="signup_time" data-am-selected="{maxHeight: 200}">
 							<?php for ( $i=0; $i<144; $i++) { echo '<option value="' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . ':00">' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . '</option>'; } ?>
 						</select>
@@ -64,9 +64,7 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 					<label for="poster_upload">活动海报 <a class="am-badge am-badge-secondary am-round" href="<?php echo home_url('/wp-admin/media-new.php'); ?>" target="_blank">上传</a></label>
 					<input type="text" id="poster_image" placeholder="请上传活动海报，并填写海报URL">
 				</div>
-			</div>
 
-			<div class="am-u-sm-6">
 				<div class="am-form-group am-g">
 					<label for="activity_detail">活动详情</label>
 					<?php
