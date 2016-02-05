@@ -125,6 +125,13 @@ class Activity_Admin {
 		return get_post( $post_id );
 	}
 
+	public static function activity_admin_get_post_meta( $post_id ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . "activity_meta";
+		$result = $wpdb -> get_row( "SELECT * FROM $table_name WHERE post_id = $post_id" );
+		return $result;
+	}
+
 	public static function activity_admin_process_post() {
 
 	}

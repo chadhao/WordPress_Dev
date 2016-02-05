@@ -4,6 +4,7 @@ include 'style.php';
 $add_new = $_GET['post_action']=='add'?true:false;
 $post_id = $add_new?0:$_GET['post_id'];
 $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
+$the_post_meta = !$add_new?Activity_Admin::activity_admin_get_post_meta( $post_id ):NULL;
 ?>
 
 <div class="wrap">
@@ -22,7 +23,7 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 
 				<div class="am-form-group am-g">
 					<label for="location">活动地点</label>
-					<input type="text" id="location" placeholder="请填写活动地点">
+					<input type="text" id="location" placeholder="请填写活动地点" value="<?php echo !$add_new?$the_post_meta -> location:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
@@ -37,12 +38,12 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 
 				<div class="am-form-group  am-g">
 					<label for="fee_member">会员收费</label>
-					<input type="number" id="fee_member" placeholder="请填写活动费用，免费请留空">
+					<input type="number" id="fee_member" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> member_fee:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
 					<label for="fee_nonmember">非会员收费</label>
-					<input type="number" id="fee_nonmember" placeholder="请填写活动费用，免费请留空">
+					<input type="number" id="fee_nonmember" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> nonmember_fee:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
@@ -57,12 +58,12 @@ $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 
 				<div class="am-form-group am-g">
 					<label for="signup_method">报名方式</label>
-					<textarea id="signup_method" rows="3" placeholder="请填写报名方式"></textarea>
+					<textarea id="signup_method" rows="3" placeholder="请填写报名方式"><?php echo !$add_new?$the_post_meta -> signup_method:''; ?></textarea>
 				</div>
 
 				<div class="am-form-group am-g">
 					<label for="poster_upload">活动海报 <a class="am-badge am-badge-secondary am-round" href="<?php echo home_url('/wp-admin/media-new.php'); ?>" target="_blank">上传</a></label>
-					<input type="text" id="poster_image" placeholder="请上传活动海报，并填写海报URL">
+					<input type="text" id="poster_image" placeholder="请上传活动海报，并填写海报URL" value="<?php echo !$add_new?$the_post_meta -> poster:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
