@@ -3,7 +3,7 @@ include 'style.php';
 
 $add_new = $_GET['post_action']=='add'?true:false;
 $post_id = $add_new?0:$_GET['post_id'];
-$the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
+$the_post = !$add_new?get_post( $post_id ):NULL;
 $the_post_meta = !$add_new?Activity_Admin::activity_admin_get_post_meta( $post_id ):NULL;
 $the_post_meta_signup_date;
 $the_post_meta_signup_time;
@@ -20,12 +20,13 @@ if ( ! $add_new ) {
 ?>
 
 <div class="wrap">
-	<form class="am-form" method="post" action="">
+	<form class="am-form" method="post" action="<?php echo esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_process_post' ) );?>">
 		<fieldset>
 
 			<legend><?php echo $add_new?'添加活动':'编辑活动'; ?></legend>
 
 			<input type="hidden" id="post_id" value="<?php echo $add_new?'new':$_GET['post_id']; ?>">
+			<input type="hidden" id="is_new" value="<?php echo $add_new; ?>">
 
 			<div class="am-g-collapse">
 				<div class="am-form-group am-g">

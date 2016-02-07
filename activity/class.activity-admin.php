@@ -32,6 +32,8 @@ class Activity_Admin {
 				self::activity_admin_delete_post();
 			} else if ( $_GET['action'] == 'activity_admin_post' ) {
 				self::activity_admin_post( $_GET['post_action'] );
+			} else if ( $_GET['action'] == 'activity_admin_process_post' ) {
+				self::activity_admin_process_post();
 			}
 
 		} else {
@@ -95,7 +97,7 @@ class Activity_Admin {
 		Activity::activity_view( 'activity_admin_setting' );
 	}
 
-	//bugs to be fixeds
+	//bugs to be fixed
 	public static function activity_admin_delete_post() {
 		if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) && isset( $_GET['post_id'] ) ) {
 			$post_deleted = wp_delete_post( $_GET['post_id'] );
@@ -121,10 +123,6 @@ class Activity_Admin {
 		}
 	}
 
-	public static function activity_admin_get_post( $post_id ) {
-		return get_post( $post_id );
-	}
-
 	public static function activity_admin_get_post_meta( $post_id ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . "activity_meta";
@@ -132,8 +130,12 @@ class Activity_Admin {
 		return $result;
 	}
 
-	public static function activity_admin_process_post() {
+	private static function activity_admin_is_field_empty() {
+		//to be implemented
+	}
 
+	public static function activity_admin_process_post() {
+		//to be implemented
 	}
 }
 
