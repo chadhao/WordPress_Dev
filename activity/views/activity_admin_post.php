@@ -5,6 +5,18 @@ $add_new = $_GET['post_action']=='add'?true:false;
 $post_id = $add_new?0:$_GET['post_id'];
 $the_post = !$add_new?Activity_Admin::activity_admin_get_post( $post_id ):NULL;
 $the_post_meta = !$add_new?Activity_Admin::activity_admin_get_post_meta( $post_id ):NULL;
+$the_post_meta_signup_date;
+$the_post_meta_signup_time;
+$the_post_meta_activity_date;
+$the_post_meta_activity_time;
+if ( ! $add_new ) {
+	$signup_time = new DateTime($the_post_meta -> signup_time);
+	$activity_time = new DateTime($the_post_meta -> activity_time);
+	$the_post_meta_signup_date = date_format( $signup_time, 'Y-m-d' );
+	$the_post_meta_signup_time = date_format( $signup_time, 'H:i' );
+	$the_post_meta_activity_date = date_format( $activity_time, 'Y-m-d' );
+	$the_post_meta_activity_time = date_format( $activity_time, 'H:i' );
+}
 ?>
 
 <div class="wrap">
@@ -29,9 +41,9 @@ $the_post_meta = !$add_new?Activity_Admin::activity_admin_get_post_meta( $post_i
 				<div class="am-form-group am-g">
 					<label for="activity_datetime">活动时间</label>
 					<div id="activity_datetime">
-						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" id="activity_date" placeholder="请选择活动日期" class="am-form-field" data-am-datepicker readonly></span>
+						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" id="activity_date" placeholder="请选择活动日期" value="<?php echo !$add_new?$the_post_meta_activity_date:''; ?>" class="am-form-field" data-am-datepicker readonly></span>
 						<select id="activity_time" data-am-selected="{maxHeight: 200}">
-							<?php for ( $i=0; $i<144; $i++) { echo '<option value="' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . ':00">' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . '</option>'; } ?>
+							<?php for ( $i=0; $i<144; $i++) { $the_time=sprintf("%02d",floor($i/6)).':'.sprintf("%02d", floor($i%6*10));  echo '<option value="' . $the_time . ':00"'; echo $the_time==$the_post_meta_activity_time?' selected>':'>'; echo $the_time . '</option>'; } ?>
 						</select>
 					</div>
 				</div>
@@ -49,9 +61,9 @@ $the_post_meta = !$add_new?Activity_Admin::activity_admin_get_post_meta( $post_i
 				<div class="am-form-group am-g">
 					<label for="signup_datetime">报名截止时间</label>
 					<div id="signup_datetime">
-						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" id="signup_date" placeholder="请选择报名截止日期" class="am-form-field" data-am-datepicker readonly></span>
+						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" id="signup_date" placeholder="请选择报名截止日期" value="<?php echo !$add_new?$the_post_meta_signup_date:''; ?>" class="am-form-field" data-am-datepicker readonly></span>
 						<select id="signup_time" data-am-selected="{maxHeight: 200}">
-							<?php for ( $i=0; $i<144; $i++) { echo '<option value="' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . ':00">' . sprintf("%02d", floor($i/6)) . ':' . sprintf("%02d", floor($i%6*10)) . '</option>'; } ?>
+							<?php for ( $i=0; $i<144; $i++) { $the_time=sprintf("%02d",floor($i/6)).':'.sprintf("%02d", floor($i%6*10));  echo '<option value="' . $the_time . ':00"'; echo $the_time==$the_post_meta_signup_time?' selected>':'>'; echo $the_time . '</option>'; } ?>
 						</select>
 					</div>
 				</div>
