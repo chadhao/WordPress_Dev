@@ -131,7 +131,12 @@ class Activity_Admin {
 	}
 
 	private static function activity_admin_is_field_empty() {
-		//to be implemented
+		foreach ( $_POST as $value) {
+			if ( empty($value) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static function activity_admin_process_post() {
