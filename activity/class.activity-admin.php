@@ -131,7 +131,7 @@ class Activity_Admin {
 	}
 
 	private static function activity_admin_is_field_empty() {
-		foreach ( $_POST as $key => $value) {
+		foreach ( $_POST as $key => $value ) {
 			if ( $key == 'poster' || $key == 'fee_member' || $key == 'fee_nonmember' ) {
 				continue;
 			}
@@ -141,9 +141,30 @@ class Activity_Admin {
 		}
 		return false;
 	}
+	
+	private static function activity_admin_process_post_data_array() {
+		$data_array = array();
+		$is_new  = $_POST['is_new']==1?true:false;
+		foreach ( $_POST as $key => $value ) {
+			$data_array[$key] = $value;
+		}
+		unset( $data_array['is_new'] );
+		if ( $is_new ) {
+			unset( $data_array['post_id'] );
+		}
+		return $data_array;
+	}
 
 	private static function activity_admin_insert_post( $data ) {
-		
+		$activity_cat = intval( get_option( 'activity_category' ) );
+		$post_date = array(
+			'post_content' => $data['activity_detail'],
+			'post_name' => $data['title'],
+			'post_title' => $data['title'],
+			'post_status' => 'publish',
+			'ping_status' => 'open',
+			'post_category' => array($activity_cat)
+		);
 	}
 
 	public static function activity_admin_process_post() {
@@ -151,7 +172,12 @@ class Activity_Admin {
 			echo '<script type="text/javascript">alert("除活动海报和收费外，其他项目均为必填！\n请检查表单是否填写完整！"); window.history.back();</script>';
 		} else {
 			if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE) && $_POST['is_new'] == 1 ) {
-				echo '<h2>is new!</h2>';
+				if ( self::activity_admin_insert_post( self::activity_admin_process_post_data_array() ) ) {
+					self::activity_admin_display_message( 'updated', '活动添加成功！' );
+				} else {
+					self::activity_admin_display_message( 'error', '活动添加失败！' );
+				}
+				Activity::activity_view( 'activity_admin_list' );
 			} else if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE) && $_POST['is_new'] == -1 ) {
 				echo '<h2>is not new!</h2>';
 			} else {

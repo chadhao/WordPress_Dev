@@ -20,9 +20,9 @@ if ( ! $add_new ) {
 		<fieldset>
 
 			<legend><?php echo $add_new?'添加活动':'编辑活动'; ?></legend>
-
-			<input type="hidden" name="post_id" id="post_id" value="<?php echo $add_new?'new':$_GET['post_id']; ?>">
+			
 			<input type="hidden" name="is_new" id="is_new" value="<?php echo $add_new?1:-1; ?>">
+			<input type="hidden" name="post_id" id="post_id" value="<?php echo $add_new?'new':$_GET['post_id']; ?>">
 
 			<div class="am-g-collapse">
 				<div class="am-form-group am-g">
