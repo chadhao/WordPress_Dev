@@ -157,7 +157,7 @@ class Activity_Admin {
 
 	private static function activity_admin_insert_post( $data ) {
 		$activity_cat = intval( get_option( 'activity_category' ) );
-		$post_date = array(
+		$post_data = array(
 			'post_content' => $data['activity_detail'],
 			'post_name' => $data['title'],
 			'post_title' => $data['title'],
@@ -165,6 +165,18 @@ class Activity_Admin {
 			'ping_status' => 'open',
 			'post_category' => array($activity_cat)
 		);
+		$post_insert = wp_insert_post($post_data );
+		if ( $post_insert == 0 ) {
+			return false;
+		} else {
+			global $wpdb;
+			$table_name = $wpdb->prefix . "activity_meta";
+			$post_meta = array(
+				'post_id' => $post_insert,
+				'location' => $data['location'],
+				
+			);
+		}
 	}
 
 	public static function activity_admin_process_post() {
