@@ -26,17 +26,17 @@ if ( ! $add_new ) {
 
 			<div class="am-g-collapse">
 				<div class="am-form-group am-g">
-					<label for="title">活动标题</label>
+					<label for="title">活动标题 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<input type="text" name="title" id="title" placeholder="请填写活动标题" value="<?php echo !$add_new?$the_post -> post_title:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="location">活动地点</label>
+					<label for="location">活动地点 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<input type="text" name="location" id="location" placeholder="请填写活动地点" value="<?php echo !$add_new?$the_post_meta -> location:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="activity_datetime">活动时间</label>
+					<label for="activity_datetime">活动时间 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<div id="activity_datetime">
 						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" name="activity_date" id="activity_date" placeholder="请选择活动日期" value="<?php echo !$add_new?$the_post_meta_activity_date:''; ?>" class="am-form-field" data-am-datepicker readonly></span>
 						<select name="activity_time" id="activity_time" data-am-selected="{maxHeight: 200}">
@@ -46,17 +46,17 @@ if ( ! $add_new ) {
 				</div>
 
 				<div class="am-form-group  am-g">
-					<label for="fee_member">会员收费</label>
+					<label for="fee_member">会员收费 <span class="am-badge am-round">选填</span></label>
 					<input type="number" name="fee_member" id="fee_member" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> member_fee:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="fee_nonmember">非会员收费</label>
+					<label for="fee_nonmember">非会员收费 <span class="am-badge am-round">选填</span></label>
 					<input type="number" name="fee_nonmember" id="fee_nonmember" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> nonmember_fee:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="signup_datetime">报名截止时间</label>
+					<label for="signup_datetime">报名截止时间 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<div id="signup_datetime">
 						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" name="signup_date" id="signup_date" placeholder="请选择报名截止日期" value="<?php echo !$add_new?$the_post_meta_signup_date:''; ?>" class="am-form-field" data-am-datepicker readonly></span>
 						<select name="signup_time" id="signup_time" data-am-selected="{maxHeight: 200}">
@@ -66,17 +66,17 @@ if ( ! $add_new ) {
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="signup_method">报名方式</label>
+					<label for="signup_method">报名方式 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<textarea name="signup_method" id="signup_method" rows="3" placeholder="请填写报名方式"><?php echo !$add_new?$the_post_meta -> signup_method:''; ?></textarea>
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="poster">活动海报 <a class="am-badge am-badge-secondary am-round" href="<?php echo home_url('/wp-admin/media-new.php'); ?>" target="_blank">上传</a></label>
+					<label for="poster">活动海报 <span class="am-badge am-round">选填</span> <a class="am-badge am-badge-secondary am-round" href="<?php echo home_url('/wp-admin/media-new.php'); ?>" target="_blank">上传</a></label>
 					<input type="text" name="poster" id="poster" placeholder="请上传活动海报，并填写海报URL" value="<?php echo !$add_new?$the_post_meta -> poster:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
-					<label for="activity_detail">活动详情</label>
+					<label for="activity_detail">活动详情 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<?php
 					wp_editor( !$add_new?$the_post -> post_content:'', 'activity_detail' );
 					?>
