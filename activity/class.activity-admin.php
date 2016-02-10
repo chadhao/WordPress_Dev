@@ -97,11 +97,11 @@ class Activity_Admin {
 		Activity::activity_view( 'activity_admin_setting' );
 	}
 
-	//bugs to be fixed
+	//need to be refactored!
+	//delete activity in both post and activity_meta
 	public static function activity_admin_delete_post() {
 		if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) && isset( $_GET['post_id'] ) ) {
 			$post_deleted = wp_delete_post( $_GET['post_id'] );
-			echo '<h2>123 - ' . $post_deleted . '</h2>';
 			if ( ! is_bool( $post_deleted ) ) {
 				self::activity_admin_display_message( 'updated', '活动删除成功！' );
 			} else {
@@ -198,9 +198,45 @@ class Activity_Admin {
 				'activity_time' => $data['activity_time'],
 				'poster' => $data['poster']
 			);
-			if ( ! $wpdb -> insert( $table_name, $post_meta ) ){
+			if ( ! $wpdb -> insert( $table_name, $post_meta ) ) {
 				wp_delete_post( $post_insert );
 				unset( $post_meta );
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private static function activity_admin_update_post( $data ) {
+		$current_post_data = get_post( intval( $data['post_id'] ) );
+		$post_data = array(
+			'ID' => intval( $data['post_id'] ),
+			'post_content' => $data['activity_detail'],
+			'post_name' => $data['title'],
+			'post_title' => $data['title']
+		);
+		$post_update = wp_update_post( $post_data );
+		unset( $post_data );
+		
+		if ( $post_update == 0 ) {
+			return false;
+		} else {
+			global $wpdb;
+			$table_name = $wpdb->prefix . "activity_meta";
+			$post_meta = array(
+				'location' => $data['location'],
+				'member_fee' => $data['fee_member'],
+				'nonmember_fee' => $data['fee_nonmember'],
+				'signup_time' => $data['signup_time'],
+				'signup_method' => $data['signup_method'],
+				'activity_time' => $data['activity_time'],
+				'poster' => $data['poster']
+			);
+			$post_meta_where = array( 'post_id' => $post_update );
+			if ( ! $wpdb -> update( $table_name, $post_meta, $post_meta_where ) ) {
+				wp_update_post( $current_post_data );
+				unset( $post_meta );
+				unset( $post_meta_where );
 				return false;
 			}
 		}
@@ -217,13 +253,16 @@ class Activity_Admin {
 				} else {
 					self::activity_admin_display_message( 'error', '活动添加失败！' );
 				}
-				Activity::activity_view( 'activity_admin_list' );
 			} else if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE) && $_POST['is_new'] == -1 ) {
-				echo '<h2>is not new!</h2>';
+				if ( self::activity_admin_update_post( self::activity_admin_process_post_data_array() ) ) {
+					self::activity_admin_display_message( 'updated', '活动编辑成功！' );
+				} else {
+					self::activity_admin_display_message( 'error', '活动编辑失败！' );
+				}
 			} else {
 				self::activity_admin_display_message( 'error', '非法请求！' );
-				Activity::activity_view( 'activity_admin_list' );
 			}
+			Activity::activity_view( 'activity_admin_list' );
 		}
 	}
 }
