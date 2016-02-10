@@ -146,12 +146,27 @@ class Activity_Admin {
 		$data_array = array();
 		$is_new  = $_POST['is_new']==1?true:false;
 		foreach ( $_POST as $key => $value ) {
+			if ( ( $key == 'fee_member' || $key == 'fee_nonmember' ) && empty($value) ) {
+				$data_array[$key] = 0;
+				continue;
+			}
 			$data_array[$key] = $value;
 		}
+		
 		unset( $data_array['is_new'] );
 		if ( $is_new ) {
 			unset( $data_array['post_id'] );
 		}
+		
+		$activity_time = $data_array['activity_date'] . ' ' . $data_array['activity_time'];
+		$signup_time = $data_array['signup_date'] . ' ' . $data_array['signup_time'];
+		unset( $data_array['activity_date'] );
+		unset( $data_array['activity_time'] );
+		unset( $data_array['signup_date'] );
+		unset( $data_array['signup_time'] );
+		$data_array['activity_time'] = $activity_time;
+		$data_array['signup_time'] = $signup_time;
+		
 		return $data_array;
 	}
 
@@ -166,6 +181,8 @@ class Activity_Admin {
 			'post_category' => array($activity_cat)
 		);
 		$post_insert = wp_insert_post($post_data );
+		unset( $post_data );
+		
 		if ( $post_insert == 0 ) {
 			return false;
 		} else {
@@ -174,9 +191,20 @@ class Activity_Admin {
 			$post_meta = array(
 				'post_id' => $post_insert,
 				'location' => $data['location'],
-				
+				'member_fee' => $data['fee_member'],
+				'nonmember_fee' => $data['fee_nonmember'],
+				'signup_time' => $data['signup_time'],
+				'signup_method' => $data['signup_method'],
+				'activity_time' => $data['activity_time'],
+				'poster' => $data['poster']
 			);
+			if ( ! $wpdb -> insert( $table_name, $post_meta ) ){
+				wp_delete_post( $post_insert );
+				unset( $post_meta );
+				return false;
+			}
 		}
+		return true;
 	}
 
 	public static function activity_admin_process_post() {
