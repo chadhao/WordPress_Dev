@@ -101,7 +101,7 @@ class Activity_Admin {
 	//delete activity in both post and activity_meta
 	public static function activity_admin_delete_post() {
 		if ( wp_verify_nonce( $_GET['_wpnonce'], self::NONCE ) && isset( $_GET['post_id'] ) ) {
-			$post_deleted = wp_delete_post( $_GET['post_id'] );
+			$post_deleted = wp_delete_post( $_GET['post_id'], true );
 			if ( ! is_bool( $post_deleted ) ) {
 				self::activity_admin_display_message( 'updated', '活动删除成功！' );
 			} else {
@@ -141,7 +141,7 @@ class Activity_Admin {
 		}
 		return false;
 	}
-	
+
 	private static function activity_admin_process_post_data_array() {
 		$data_array = array();
 		$is_new  = $_POST['is_new']==1?true:false;
@@ -152,12 +152,12 @@ class Activity_Admin {
 			}
 			$data_array[$key] = $value;
 		}
-		
+
 		unset( $data_array['is_new'] );
 		if ( $is_new ) {
 			unset( $data_array['post_id'] );
 		}
-		
+
 		$activity_time = $data_array['activity_date'] . ' ' . $data_array['activity_time'];
 		$signup_time = $data_array['signup_date'] . ' ' . $data_array['signup_time'];
 		unset( $data_array['activity_date'] );
@@ -166,7 +166,7 @@ class Activity_Admin {
 		unset( $data_array['signup_time'] );
 		$data_array['activity_time'] = $activity_time;
 		$data_array['signup_time'] = $signup_time;
-		
+
 		return $data_array;
 	}
 
@@ -182,7 +182,7 @@ class Activity_Admin {
 		);
 		$post_insert = wp_insert_post($post_data );
 		unset( $post_data );
-		
+
 		if ( $post_insert == 0 ) {
 			return false;
 		} else {
@@ -206,7 +206,7 @@ class Activity_Admin {
 		}
 		return true;
 	}
-	
+
 	private static function activity_admin_update_post( $data ) {
 		$current_post_data = get_post( intval( $data['post_id'] ) );
 		$post_data = array(
@@ -217,7 +217,7 @@ class Activity_Admin {
 		);
 		$post_update = wp_update_post( $post_data );
 		unset( $post_data );
-		
+
 		if ( $post_update == 0 ) {
 			return false;
 		} else {
