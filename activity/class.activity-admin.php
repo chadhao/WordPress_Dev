@@ -232,7 +232,7 @@ class Activity_Admin {
 				'activity_time' => $data['activity_time'],
 				'poster' => $data['poster']
 			);
-			$post_meta_where = array( 'post_id' => $post_update );
+			$post_meta_where = array( 'post_id' => intval( $data['post_id'] ) );
 			if ( ! $wpdb -> update( $table_name, $post_meta, $post_meta_where ) ) {
 				wp_update_post( $current_post_data );
 				unset( $post_meta );
