@@ -34,6 +34,8 @@ class Activity_Admin {
 				self::activity_admin_post( $_GET['post_action'] );
 			} else if ( $_GET['action'] == 'activity_admin_process_post' ) {
 				self::activity_admin_process_post();
+			} else if ( $_GET['action'] == 'error_add_activity' ) {
+				self::error_add_activity();
 			}
 
 		} else {
@@ -146,7 +148,7 @@ class Activity_Admin {
 		$data_array = array();
 		$is_new  = $_POST['is_new']==1?true:false;
 		foreach ( $_POST as $key => $value ) {
-			if ( ( $key == 'fee_member' || $key == 'fee_nonmember' ) && empty($value) ) {
+			if ( ( $key == 'fee_member' || $key == 'fee_nonmember' ) && empty( $value ) ) {
 				$data_array[$key] = 0;
 				continue;
 			}
@@ -171,40 +173,42 @@ class Activity_Admin {
 	}
 
 	private static function activity_admin_insert_post( $data ) {
-		$activity_cat = intval( get_option( 'activity_category' ) );
-		$post_data = array(
-			'post_content' => $data['activity_detail'],
-			'post_name' => $data['title'],
-			'post_title' => $data['title'],
-			'post_status' => 'publish',
-			'ping_status' => 'open',
-			'post_category' => array($activity_cat)
+		global $wpdb;
+		$table_name = $wpdb->prefix . "activity_meta";
+		$post_meta = array(
+			'post_id' => 0,
+			'location' => $data['location'],
+			'member_fee' => $data['fee_member'],
+			'nonmember_fee' => $data['fee_nonmember'],
+			'signup_time' => $data['signup_time'],
+			'signup_method' => $data['signup_method'],
+			'activity_time' => $data['activity_time'],
+			'poster' => $data['poster']
 		);
-		$post_insert = wp_insert_post($post_data );
-		unset( $post_data );
-
-		if ( $post_insert == 0 ) {
+		if ( ! $wpdb -> insert( $table_name, $post_meta ) ) {
+			unset( $post_meta );
 			return false;
 		} else {
-			global $wpdb;
-			$table_name = $wpdb->prefix . "activity_meta";
-			$post_meta = array(
-				'post_id' => $post_insert,
-				'location' => $data['location'],
-				'member_fee' => $data['fee_member'],
-				'nonmember_fee' => $data['fee_nonmember'],
-				'signup_time' => $data['signup_time'],
-				'signup_method' => $data['signup_method'],
-				'activity_time' => $data['activity_time'],
-				'poster' => $data['poster']
+			$activity_cat = intval( get_option( 'activity_category' ) );
+			$activity_slug = 'activity' . date( 'ymdHis' );
+			$post_data = array(
+				'post_content' => $data['activity_detail'],
+				'post_name' => $activity_slug,
+				'post_title' => $data['title'],
+				'post_status' => 'publish',
+				'ping_status' => 'open',
+				'post_category' => array($activity_cat)
 			);
-			if ( ! $wpdb -> insert( $table_name, $post_meta ) ) {
-				wp_delete_post( $post_insert );
-				unset( $post_meta );
+			$post_insert = wp_insert_post( $post_data );
+			unset( $post_data );
+			if ( $post_insert == 0 ) {
+				$wpdb -> delete( $table_name, array( 'post_id' => 0 ) );
 				return false;
+			} else {
+				$wpdb -> update( $table_name, array( 'post_id' => $post_insert ), array( 'post_id' => 0 ) );
+				return true;
 			}
 		}
-		return true;
 	}
 
 	private static function activity_admin_update_post( $data ) {
@@ -212,7 +216,6 @@ class Activity_Admin {
 		$post_data = array(
 			'ID' => intval( $data['post_id'] ),
 			'post_content' => $data['activity_detail'],
-			'post_name' => $data['title'],
 			'post_title' => $data['title']
 		);
 		$post_update = wp_update_post( $post_data );
@@ -233,7 +236,7 @@ class Activity_Admin {
 				'poster' => $data['poster']
 			);
 			$post_meta_where = array( 'post_id' => intval( $data['post_id'] ) );
-			if ( ! $wpdb -> update( $table_name, $post_meta, $post_meta_where ) ) {
+			if ( $wpdb -> update( $table_name, $post_meta, $post_meta_where === false ) ) {
 				wp_update_post( $current_post_data );
 				unset( $post_meta );
 				unset( $post_meta_where );
@@ -265,6 +268,12 @@ class Activity_Admin {
 			Activity::activity_view( 'activity_admin_list' );
 		}
 	}
+
+	public static function error_add_activity() {
+		self::activity_admin_display_message( 'error', '请通过活动插件添加/编辑活动！' );
+		Activity::activity_view( 'activity_admin_list' );
+	}
+
 }
 
 ?>

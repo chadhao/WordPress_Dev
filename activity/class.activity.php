@@ -2,18 +2,18 @@
 
 class Activity {
 	private static $activity_initialed = false;
-	
+
 	public static function activity_init() {
 		if ( !self::$activity_initialed ) {
 			self::activity_init_hooks();
 		}
 	}
-	
+
 	public static function activity_activation() {
 		$activity_init_terms = get_terms( 'category', 'orderby=id&hide_empty=0' );
 		$activity_init_current_option = get_option( 'activity_category', 'false' );
 		$activity_option_matches_term = false;
-		
+
 		if ( ! empty( $activity_init_terms ) && ! is_wp_error( $activity_init_terms ) ) {
 			if ( $activity_init_current_option != 'false' ) {
 				foreach ( $activity_init_terms as $activity_init_term ) {
@@ -34,18 +34,18 @@ class Activity {
 			update_option( 'activity_category', 0 );
 			update_option( 'activity_signup_method', '' );
 		}
-		
+
 		self::activity_init_database();
 	}
-	
+
 	public static function activity_deactivation() {
-		
+
 	}
-	
+
 	public static function activity_uninstall() {
-		
+
 	}
-	
+
 	/**
 	 * Determining if required table exists
 	 * @global type $wpdb
@@ -57,14 +57,14 @@ class Activity {
 		$activity_table_dbname = DB_NAME;
 		$activity_table_sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '$activity_table_dbname' AND table_name = '$activity_table_name'";
 		$activity_table_count = $wpdb->get_var( $activity_table_sql );
-		
+
 		if ( $activity_table_count > 0 ) {
 			return true;
 		}
 		return false;
 	}
 	*/
-	
+
 	/**
 	 * Initialize plugin database
 	 */
@@ -74,7 +74,7 @@ class Activity {
 		$activity_table_name_signup = $wpdb->prefix . "activity_signup";
 		$activity_table_name_posts = $wpdb->prefix . "posts";
 		$activity_charset_collate = $wpdb->get_charset_collate();
-		
+
 		$activity_signup_sql = "CREATE TABLE $activity_table_name_signup (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			activity_id bigint(20) unsigned NOT NULL,
@@ -88,7 +88,7 @@ class Activity {
 			CONSTRAINT pk_activity_signup_id PRIMARY KEY (id),
 			CONSTRAINT fk_activity_signup_activity_id FOREIGN KEY (activity_id) REFERENCES " . $activity_table_name_meta . "(post_id)
 		) $activity_charset_collate;";
-		
+
 		$activity_meta_sql = "CREATE TABLE $activity_table_name_meta (
 			post_id bigint(20) unsigned NOT NULL,
 			location varchar(1024) NOT NULL,
@@ -98,15 +98,14 @@ class Activity {
 			signup_method varchar(2048) NOT NULL,
 			activity_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			poster varchar(255),
-			CONSTRAINT pk_activity_meta_post_id PRIMARY KEY (post_id),
-			CONSTRAINT fk_activity_meta_post_id FOREIGN KEY (post_id) REFERENCES " . $activity_table_name_posts . "(ID)
+			CONSTRAINT pk_activity_meta_post_id PRIMARY KEY (post_id)
 		) $activity_charset_collate;";
-		
+
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		
+
 		dbDelta( $activity_meta_sql );
 		dbDelta( $activity_signup_sql );
-		
+
 		/*
 		if ( ! self::activity_is_table_created( $activity_table_name_meta ) ) {
 			dbDelta( $activity_meta_sql );
@@ -121,9 +120,9 @@ class Activity {
 	 * Initialize wordpress hooks
 	 */
 	private static function activity_init_hooks() {
-		
+
 	}
-	
+
 	public static function activity_view( $file_name ) {
 		include( ACTIVITY__PLUGIN_DIR . 'views/' . $file_name . '.php' );
 	}
