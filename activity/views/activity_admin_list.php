@@ -19,7 +19,7 @@ $all_activity = get_posts( $activity_args );
 		<tr>
 			<td>ID</td>
 			<td>标题</td>
-			<td>别名</td>
+			<td>报名数</td>
 			<td>最后修改</td>
 			<td>操作</td>
 		</tr>
@@ -28,7 +28,7 @@ $all_activity = get_posts( $activity_args );
 				echo '<tr>' .
 						'<td>' . $activity -> ID .'</td>' .
 						'<td>' . $activity -> post_title . '</td>' .
-						'<td>' . $activity -> post_name . '</td>' .
+						'<td>' . Activity_Signup::activity_signup_count($activity->ID) . '</td>' .
 						'<td>' . $activity -> post_modified . '</td>' .
 						'<td><a href="' . esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_edit_post', $activity -> ID ) ) . '">编辑</a> | <a href="' . esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_delete_post', $activity -> ID ) ) . '">删除</a></td>' .
 					 '</tr>';

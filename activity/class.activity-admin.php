@@ -36,6 +36,8 @@ class Activity_Admin {
 				self::activity_admin_process_post();
 			} else if ( $_GET['action'] == 'error_add_activity' ) {
 				self::error_add_activity();
+			} else if ( $_GET['action'] == 'activity_admin_signup_list' ) {
+				self::activity_admin_signup_list();
 			}
 
 		} else {
@@ -44,7 +46,7 @@ class Activity_Admin {
 	}
 
 	public static function activity_admin_get_url( $action, $post_id=0 ) {
-		if ( $action == 'activity_admin_delete_post' ) {
+		if ( $action == 'activity_admin_delete_post' || $action == 'activity_admin_signup_list' ) {
 			$args = array( 'page' => 'activity_admin', 'action' => $action, 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_add_post' ) {
 			$args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_post', 'post_action' => 'add', '_wpnonce' => wp_create_nonce( self::NONCE ) );
@@ -272,6 +274,10 @@ class Activity_Admin {
 	public static function error_add_activity() {
 		self::activity_admin_display_message( 'error', '请通过活动插件添加/编辑活动！' );
 		Activity::activity_view( 'activity_admin_list' );
+	}
+
+	public static function activity_admin_signup_list() {
+		Activity::activity_view( 'activity_admin_signup_list' );
 	}
 
 }
