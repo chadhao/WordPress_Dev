@@ -26,6 +26,7 @@ register_activation_hook( __FILE__, array( 'Activity', 'activity_activation' ) )
 register_deactivation_hook( __FILE__, array( 'Activity', 'activity_deactivation' ) );
 
 require_once( ACTIVITY__PLUGIN_DIR . 'class.activity.php' );
+require_once( ACTIVITY__PLUGIN_DIR . 'class.activity-signup.php' );
 
 add_action( 'init', array( 'Activity', 'activity_init' ) );
 
