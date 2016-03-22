@@ -7,33 +7,32 @@ $list = Activity_Signup::activity_signup_get_list( $post_id );
 ?>
 
 <div class="wrap">
-  <h1><?php echo $post_id==0?'No Activity':get_the_title($post_id); ?> <a href="<?php echo esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_add_post' ) ); ?>" class="page-title-action">add participator</a></h1>
+  <h1><?php echo $post_id==0?'No Activity':get_the_title($post_id); ?> <a href="<?php echo esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_add_post' ) ); ?>" class="page-title-action">添加参与者</a></h1>
   <table class="am-table am-table-hover">
     <?php
       if($post_id != 0){
      ?>
-     <tr>
+     <tr style="text-align:center;">
        <td>ID</td>
-       <td>name</td>
-       <td>email</td>
-       <td>phone</td>
-       <td>fee_paid</td>
-       <td>is_aut_student</td>
-       <td>is_autcsa_member</td>
-       <td>time</td>
+       <td>姓名</td>
+       <td>E-mail</td>
+       <td>电话</td>
+       <td>是否付费</td>
+       <td>AUT学生</td>
+       <td>AUTCSA会员</td>
+       <td>操作</td>
      </tr>
      <?php
        $ID = 1;
        foreach ( $list as $piece ) {
-         echo '<tr>' .
+         echo '<tr style="text-align:center;">' .
              '<td>' . $ID++ .'</td>' .
              '<td>' . $piece -> name . '</td>' .
              '<td>' . $piece -> email . '</td>' .
              '<td>' . $piece -> phone . '</td>' .
-             '<td>' . $piece -> fee_paid . '</td>' .
-             '<td>' . $piece -> is_aut_student . '</td>' .
-             '<td>' . $piece -> is_autcsa_member . '</td>' .
-
+             '<td>' . ($piece -> fee_paid?'<span class="am-icon-check"></span>':' ') . '</td>' .
+             '<td>' . ($piece -> is_aut_student?'<span class="am-icon-check"></span>':' ') . '</td>' .
+             '<td>' . ($piece -> is_autcsa_member?'<span class="am-icon-check"></span>':' ') . '</td>' .
              '<td><a href="' . esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_edit_post', $activity -> ID ) ) . '">编辑</a> | <a href="' . esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_delete_post', $activity -> ID ) ) . '">删除</a></td>' .
 
             '</tr>';
