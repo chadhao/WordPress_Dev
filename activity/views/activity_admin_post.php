@@ -2,7 +2,7 @@
 include 'style.php';
 
 $add_new = $_GET['post_action']=='add'?true:false;
-$post_id = $add_new?0:$_GET['post_id'];
+$post_id = $add_new?0:intval($_GET['post_id']);
 $the_post = !$add_new?get_post( $post_id ):NULL;
 $the_post_meta = !$add_new?Activity_Admin::activity_admin_get_post_meta( $post_id ):NULL;
 if ( ! $add_new ) {
