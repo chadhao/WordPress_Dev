@@ -24,7 +24,7 @@ class Activity_Admin {
 	}
 
 	public static function activity_admin_page() {
-		if ( isset( $_GET['action'] ) )
+		if ( isset( $_GET['action'] ) || isset( $_GET['signup_action'] ) )
 		{
 			if ( $_GET['action'] == 'activity_admin_setting' ) {
                             self::activity_admin_setting();
@@ -36,11 +36,15 @@ class Activity_Admin {
                             self::activity_admin_process_post();
 			} else if ( $_GET['action'] == 'error_add_activity' ) {
                             self::error_add_activity();
-			} else if ( $_GET['action'] == 'activity_admin_signup_list' && $_GET['signup_action'] == 'view' ) {
-                            self::activity_admin_signup_list();
-			} else if ( $_GET['action'] == 'activity_admin_signup_list' && $_GET['signup_action'] == 'delete' ) {
+			} else if ( $_GET['signup_action'] == 'view' ) {
+                            Activity_Signup::activity_signup_list();
+			} else if ( $_GET['signup_action'] == 'delete' ) {
                             Activity_Signup::activity_signup_delete();
-                        }
+                        } else if ( $_GET['signup_action'] == 'edit' ) {
+			    Activity_Signup::activity_signup_detail();
+			} else if ( $_GET['signup_action'] == 'add' ) {
+			    Activity_Signup::activity_signup_detail();
+			}
 
 		} else {
 			self::activity_admin_display_activity();
@@ -51,10 +55,14 @@ class Activity_Admin {
 		if ( $action == 'activity_admin_delete_post' ) {
                     $args = array( 'page' => 'activity_admin', 'action' => $action, 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_signup_list' ) {
-		    $args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_signup_list', 'signup_action' => 'view', 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'view', 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_delete_signup' ) {
-                    $args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_signup_list', 'signup_action' => 'delete', 'post_id' => $post_id, 'signup_id' => $signup_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
-                } else if ( $action == 'activity_admin_add_post' ) {
+                    $args = array( 'page' => 'activity_admin', 'signup_action' => 'delete', 'post_id' => $post_id, 'signup_id' => $signup_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+                } else if ( $action == 'activity_admin_edit_signup' ) {
+		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'edit', 'post_id' => $post_id, 'signup_id' => $signup_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		} else if ( $action == 'activity_admin_add_signup' ) {
+		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'add', '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		} else if ( $action == 'activity_admin_add_post' ) {
                     $args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_post', 'post_action' => 'add', '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_edit_post' ) {
                     $args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_post', 'post_action' => 'edit', 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
@@ -280,10 +288,6 @@ class Activity_Admin {
 	public static function error_add_activity() {
 		self::activity_admin_display_message( 'error', '请通过活动插件添加/编辑活动！' );
 		Activity::activity_view( 'activity_admin_list' );
-	}
-
-	public static function activity_admin_signup_list() {
-		Activity::activity_view( 'activity_admin_signup_list' );
 	}
 
 }

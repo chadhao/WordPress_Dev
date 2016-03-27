@@ -22,6 +22,20 @@ class Activity_Signup {
         return $signup_list;
     }
     
+    public static function activity_signup_list() {
+	Activity::activity_view( 'activity_admin_signup_list' );
+    }
+    
+    public static function activity_signup_get_signup( $signup_id=0 ) {
+	if ( $signup_id == 0 ) {
+            return 0;
+        }
+        global $wpdb;
+        $table_name = $wpdb->prefix . "activity_signup";
+        $signup = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $signup_id");
+        return $signup;
+    }
+    
     public static function activity_signup_delete() {
         if ( ! isset( $_GET['signup_id'] ) || $_GET['signup_id'] == 0 ) {
 	    return 0;
@@ -39,6 +53,10 @@ class Activity_Signup {
 	    Activity_Admin::activity_admin_display_message( 'error', '非法请求！' );
 	}
 	Activity::activity_view( 'activity_admin_signup_list' );
+    }
+    
+    public static function activity_signup_detail() {
+	Activity::activity_view( 'activity_admin_signup' );
     }
     
     public static function activity_signup_edit() {
