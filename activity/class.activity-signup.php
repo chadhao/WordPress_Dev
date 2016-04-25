@@ -59,6 +59,10 @@ class Activity_Signup {
 	Activity::activity_view( 'activity_admin_signup' );
     }
     
+    public static function activity_signup_process_signup() {
+	echo '<h1>got here!</h1>';
+    }
+    
     public static function activity_signup_edit() {
         
     }

@@ -2,7 +2,7 @@
 include 'style.php';
 
 $add_new = $_GET['signup_action']=='add'?true:false;
-$post_id = $add_new?0:intval($_GET['post_id']);
+$post_id = isset($_GET['post_id'])?intval($_GET['post_id']):0;
 if ( ! $add_new ) {
     $signup = Activity_Signup::activity_signup_get_signup( intval( $_GET['signup_id'] ) );
 }
@@ -16,7 +16,8 @@ if ( ! $add_new ) {
 	    <legend><?php echo $add_new?'添加参与者':'编辑参与者'; ?></legend>
 	    
 	    <input type="hidden" name="is_new" value="<?php echo $add_new?1:-1; ?>">
-	    <input type="hidden" name="post_id" value="<?php echo $add_new?0:$post_id; ?>">
+	    <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+	    <input type="hidden" name="signup_id" value="<?php echo $add_new?0:intval( $_GET['signup_id'] ); ?>">
 	    
 	    <div class="am-form-group">
 		<label for="fullname" class="am-u-sm-1 am-form-label">姓名</label>

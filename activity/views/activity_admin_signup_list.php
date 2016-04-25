@@ -1,13 +1,13 @@
 <?php
 include 'style.php';
 
-$post_id = isset($_GET['post_id'])?$_GET['post_id']:0;
+$post_id = isset($_GET['post_id'])?intval($_GET['post_id']):0;
 
 $list = Activity_Signup::activity_signup_get_list( $post_id );
 ?>
 
 <div class="wrap">
-  <h1><?php echo $post_id==0?'No Activity':get_the_title($post_id); ?> <a href="<?php echo esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_add_signup' ) ); ?>" class="page-title-action">添加参与者</a></h1>
+  <h1><?php echo $post_id==0?'No Activity':get_the_title($post_id); ?> <a href="<?php echo esc_url( Activity_Admin::activity_admin_get_url( 'activity_admin_add_signup', $post_id ) ); ?>" class="page-title-action">添加参与者</a></h1>
   <table class="am-table am-table-hover">
     <?php
       if($post_id != 0){

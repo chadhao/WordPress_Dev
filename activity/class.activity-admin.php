@@ -44,6 +44,8 @@ class Activity_Admin {
 			    Activity_Signup::activity_signup_detail();
 			} else if ( $_GET['signup_action'] == 'add' ) {
 			    Activity_Signup::activity_signup_detail();
+			} else if ( $_GET['signup_action'] == 'process' ) {
+			    Activity_Signup::activity_signup_process_signup();
 			}
 
 		} else {
@@ -61,7 +63,9 @@ class Activity_Admin {
                 } else if ( $action == 'activity_admin_edit_signup' ) {
 		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'edit', 'post_id' => $post_id, 'signup_id' => $signup_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_add_signup' ) {
-		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'add', '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'add', 'post_id' => $post_id, '_wpnonce' => wp_create_nonce( self::NONCE ) );
+		} else if ( $action == 'activity_admin_process_signup' ) {
+		    $args = array( 'page' => 'activity_admin', 'signup_action' => 'process', '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_add_post' ) {
                     $args = array( 'page' => 'activity_admin', 'action' => 'activity_admin_post', 'post_action' => 'add', '_wpnonce' => wp_create_nonce( self::NONCE ) );
 		} else if ( $action == 'activity_admin_edit_post' ) {
