@@ -59,16 +59,69 @@ class Activity_Signup {
 	Activity::activity_view( 'activity_admin_signup' );
     }
     
+    private static function activity_signup_is_field_empty() {
+	foreach ( $_POST as $key => $value ) {
+	    if ( $key == 'fullname' || $key == 'phone' ) {
+		if ( empty( $value ) ) {
+		    return true;
+		}
+	    }
+	}
+	return false;
+    }
+    
     public static function activity_signup_process_signup() {
-	echo '<h1>got here!</h1>';
+	if ( self::activity_signup_is_field_empty() ) {
+	    echo '<script type="text/javascript">alert("姓名与电话为必填项目！\n请检查表单是否填写完整！"); window.history.back();</script>';
+	} else {
+	    if ( wp_verify_nonce( $_GET['_wpnonce'], Activity_Admin::NONCE) && $_POST['is_new'] == 1 ) {
+		if ( self::activity_signup_add( self::activity_singup_prepare_data() ) ) {
+		    Activity_Admin::activity_admin_display_message( 'updated', '活动参与人信息添加成功！' );
+		} else {
+		    Activity_Admin::activity_admin_display_message( 'error', '活动参与人信息添加失败！' );
+		}
+	    } else if ( wp_verify_nonce( $_GET['_wpnonce'], Activity_Admin::NONCE) && $_POST['is_new'] == -1 ) {
+		if ( self::activity_signup_edit( self::activity_singup_prepare_data() ) ) {
+		    Activity_Admin::activity_admin_display_message( 'updated', '活动参与人信息编辑成功！' );
+		} else {
+		    Activity_Admin::activity_admin_display_message( 'error', '活动参与人信息编辑失败！' );
+		}
+	    } else {
+		echo '<script type="text/javascript">alert("非法请求！"); </script>';
+	    }
+	    Activity::activity_view( 'activity_admin_list' );
+	}
     }
     
-    public static function activity_signup_edit() {
-        
+    private static function activity_singup_prepare_data() {
+	$data = array();
+	if ( intval( $_POST['is_new'] ) == -1 ) {
+	    $data['signup_id'] = intval( $_POST['signup_id'] );
+	}
+	$data['activity_id'] = intval( $_POST['post_id'] );
+	$data['name'] = $_POST['fullname'];
+	$data['email'] = $_POST['email'];
+	$data['phone'] = $_POST['phone'];
+	$data['fee_paid'] = isset( $_POST['fee_paid'] )?1:0;
+	$data['is_aut_student'] = isset( $_POST['is_aut_student'] )?1:0;
+	$data['is_autcsa_member'] = isset( $_POST['is_autcsa_member'] )?1:0;
+	$data['time'] = date('Y-m-d H:i:s');
+	return $data;
     }
     
-    public static function activity_signup_add() {
-	
+    private static function activity_signup_edit( $data ) {
+	$signup_id = $data['signup_id'];
+	unset($data['signup_id']);
+        global $wpdb;
+	$table_name = $wpdb->prefix . "activity_signup";
+	$where_cond = array( 'id' => $signup_id );
+	return ($wpdb -> update( $table_name, $data, $where_cond ) === false)?false:true;
+    }
+    
+    private static function activity_signup_add( $data ) {
+	global $wpdb;
+	$table_name = $wpdb->prefix . "activity_signup";
+	return $wpdb -> insert( $table_name, $data );
     }
 
 }

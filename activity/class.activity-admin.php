@@ -168,7 +168,7 @@ class Activity_Admin {
 		$data_array = array();
 		$is_new  = $_POST['is_new']==1?true:false;
 		foreach ( $_POST as $key => $value ) {
-			if ( ( $key == 'fee_member' || $key == 'fee_nonmember' ) && empty( $value ) ) {
+			if ( ( $key == 'fee_member' || $key == 'fee_nonmember' ) && empty( intval( $value ) ) ) {
 				$data_array[$key] = 0;
 				continue;
 			}
@@ -256,7 +256,7 @@ class Activity_Admin {
 				'poster' => $data['poster']
 			);
 			$post_meta_where = array( 'post_id' => intval( $data['post_id'] ) );
-			if ( $wpdb -> update( $table_name, $post_meta, $post_meta_where === false ) ) {
+			if ( $wpdb -> update( $table_name, $post_meta, $post_meta_where ) === false ) {
 				wp_update_post( $current_post_data );
 				unset( $post_meta );
 				unset( $post_meta_where );

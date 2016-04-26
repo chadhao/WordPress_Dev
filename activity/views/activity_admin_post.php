@@ -47,12 +47,12 @@ if ( ! $add_new ) {
 
 				<div class="am-form-group  am-g">
 					<label for="fee_member">会员收费 <span class="am-badge am-round">选填</span></label>
-					<input type="number" name="fee_member" id="fee_member" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> member_fee:''; ?>">
+					<input type="text" name="fee_member" id="fee_member" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> member_fee:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
 					<label for="fee_nonmember">非会员收费 <span class="am-badge am-round">选填</span></label>
-					<input type="number" name="fee_nonmember" id="fee_nonmember" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> nonmember_fee:''; ?>">
+					<input type="text" name="fee_nonmember" id="fee_nonmember" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new?$the_post_meta -> nonmember_fee:''; ?>">
 				</div>
 
 				<div class="am-form-group am-g">
