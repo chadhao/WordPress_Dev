@@ -20,11 +20,11 @@ register_deactivation_hook( __FILE__, 'pp_deactivation' );
 add_action( 'init', 'pp_init' );
 
 function pp_activation() {
-	
+
 }
 
 function pp_deactivation() {
-	
+
 }
 
 function pp_init() {
@@ -37,19 +37,19 @@ function pp_load_menu() {
 
 function pp_message( $type, $msg ) {
 	if ( $type == 'error' ) {
-		echo '<div class="error"><p>' . $msg . '</p></div>'; 
+		echo '<div class="error"><p>' . $msg . '</p></div>';
 	} else {
 		echo '<div class="updated"><p>' . $msg . '</p></div>';
 	}
 }
-	
+
 function pp_display_message( $type, $msg ) {
 	add_action( 'admin_notice', 'pp_message', 10, 2 );
 	do_action( 'admin_notice', $type, $msg);
 }
 
 function pp_page() {
-	
+
 	if ( isset($_POST['post_amount']) ) {
 		if ( intval( $_POST['post_amount'] ) < 1 ) {
 			pp_display_message( 'error', 'Invalid amount!' );
@@ -60,7 +60,7 @@ function pp_page() {
 			pp_display_message( 'updated', 'Random posts populated! Exec time: ' . $end_time . 's.');
 		}
 	}
-	
+
 	$all_terms = get_terms( 'category', 'orderby=id&hide_empty=0' );
 	echo '
 		<div class="wrap">
@@ -99,7 +99,7 @@ function pp_random_part( $len ) {
 
 function pp_populate( $cat, $amount ) {
 	for ($i = 0; $i < $amount; $i++) {
-		$rand_post = pp_random_part(5) . '-' . pp_random_part(5) . '-' . pp_random_part(5);
+		$rand_post = pp_random_part(10) . '-' . pp_random_part(10) . '-' . pp_random_part(10);
 		$post = array(
 			'post_content'   => $rand_post,
 			'post_name'      => $rand_post,
