@@ -1,6 +1,4 @@
 <?php
-/**
- */
 /*
 Plugin Name: Activity
 Plugin URI: http://autcsa.org.nz/

@@ -8,11 +8,10 @@ class Activity_Admin
 
     public static function activity_admin_init()
     {
-        add_shortcode('activity-get-data', array('Activity_Admin', 'activity_admin_get_data'));
-        add_shortcode('activity-test', 'activity_admin_shortcode_test');
         if (!self::$activity_admin_initialed) {
             self::activity_admin_init_hooks();
         }
+        add_shortcode('activity_signup_form', 'activity_admin_shortcode_test');
     }
 
     public static function activity_admin_init_hooks()
@@ -341,6 +340,6 @@ class Activity_Admin
 
     public static function activity_admin_shortcode_test()
     {
-        return 'test shortcode!';
+        echo '<h1>test shortcode!</h1>';
     }
 }
