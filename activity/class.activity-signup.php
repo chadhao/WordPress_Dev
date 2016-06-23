@@ -141,4 +141,22 @@ class Activity_Signup
 
         return $wpdb->insert($table_name, $data);
     }
+
+    public static function activity_signup_get_data($atts)
+    {
+        $post_id = intval($atts['post_id']);
+        $field = $atts['field'];
+        if (empty($post_id) || empty($field)) {
+            return -1;
+        }
+        global $wpdb;
+        $table_name = $wpdb->prefix.'activity_signup';
+        $query = "SELECT $field FROM $table_name WHERE activity_id = $post_id";
+        $signup_data = $wpdb->get_row($query, ARRAY_A);
+        if (is_null($signup_data)) {
+            return -1;
+        }
+
+        return $signup_data[$field];
+    }
 }
