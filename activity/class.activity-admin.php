@@ -8,7 +8,6 @@ class Activity_Admin
 
     public static function activity_admin_init()
     {
-        add_shortcode('activity_signup_form', array('Activity_Admin', 'activity_admin_shortcode_test'));
         if (!self::$activity_admin_initialed) {
             self::activity_admin_init_hooks();
         }
@@ -317,28 +316,5 @@ class Activity_Admin
     {
         self::activity_admin_display_message('error', '请通过活动插件添加/编辑活动！');
         Activity::activity_view('activity_admin_list');
-    }
-
-    public static function activity_admin_get_data($atts)
-    {
-        $post_id = intval($atts['post_id']);
-        $field = $atts['field'];
-        if (empty($post_id) || empty($field)) {
-            return -1;
-        }
-        global $wpdb;
-        $table_name = $wpdb->prefix.'activity_signup';
-        $query = "SELECT $field FROM $table_name WHERE activity_id = $post_id";
-        $signup_data = $wpdb->get_row($query, ARRAY_A);
-        if (is_null($signup_data)) {
-            return -1;
-        }
-
-        return $signup_data[$field];
-    }
-
-    public static function activity_admin_shortcode_test()
-    {
-        return '<h1>test shortcode!</h1>';
     }
 }
