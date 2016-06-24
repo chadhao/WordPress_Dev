@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Activity
-Plugin URI: http://autcsa.org.nz/
+Plugin URI: http://autcsa.nz/
 Description: This is the Activity plugin developed specially for AUTCSA.
-Version: 1.0.0
+Version: 1.0.1
 Author: Chad Hao
 Author URI: http://chadhao.com/
 License: GPLv2

@@ -8,16 +8,15 @@ class Activity_Admin
 
     public static function activity_admin_init()
     {
+        add_shortcode('activity_signup_form', array('Activity_Admin', 'activity_admin_shortcode_test'));
         if (!self::$activity_admin_initialed) {
             self::activity_admin_init_hooks();
         }
-        add_shortcode('activity_signup_form', 'activity_admin_shortcode_test');
     }
 
     public static function activity_admin_init_hooks()
     {
         self::$activity_admin_initialed = true;
-
         add_action('admin_menu', array('Activity_Admin', 'activity_admin_load_menu'));
     }
 
@@ -340,6 +339,6 @@ class Activity_Admin
 
     public static function activity_admin_shortcode_test()
     {
-        echo '<h1>test shortcode!</h1>';
+        return '<h1>test shortcode!</h1>';
     }
 }
