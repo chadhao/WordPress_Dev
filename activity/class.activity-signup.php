@@ -86,7 +86,14 @@ class Activity_Signup
         if (self::activity_signup_is_field_empty()) {
             echo '<script type="text/javascript">alert("姓名与电话为必填项目！\n请检查表单是否填写完整！"); window.history.back();</script>';
         } else {
-            if (wp_verify_nonce($_GET['_wpnonce'], Activity_Admin::NONCE) && $_POST['is_new'] == 1) {
+            if (isset($_POST['frontend']) && $_POST['frontend'] == 1) {
+                if (self::activity_signup_add(self::activity_singup_prepare_data())) {
+                    header('Location: '.get_site_url().'//activity_signup_success');
+                } else {
+                    header('Location: '.get_site_url().'//activity_signup_error');
+                }
+                exit();
+            } elseif (wp_verify_nonce($_GET['_wpnonce'], Activity_Admin::NONCE) && $_POST['is_new'] == 1) {
                 if (self::activity_signup_add(self::activity_singup_prepare_data())) {
                     Activity_Admin::activity_admin_display_message('updated', '活动参与人信息添加成功！');
                 } else {
@@ -123,8 +130,29 @@ class Activity_Signup
         return $data;
     }
 
+    private static function activity_signup_validate_data($data, $add = false)
+    {
+        if (!is_numeric($data['phone']) || strlen($data['phone']) > 15) {
+            return false;
+        }
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        global $wpdb;
+        $table_name = $wpdb->prefix.'activity_signup';
+        $phone_exist = $wpdb->get_var("SELECT id FROM $table_name WHERE activity_id=".$data['activity_id']." AND phone='".$data['phone']."'") ? true : false;
+        if ($add && $phone_exist) {
+            return false;
+        }
+
+        return true;
+    }
+
     private static function activity_signup_edit($data)
     {
+        if (!self::activity_signup_validate_data($data)) {
+            return false;
+        }
         $signup_id = $data['signup_id'];
         unset($data['signup_id']);
         global $wpdb;
@@ -136,9 +164,17 @@ class Activity_Signup
 
     private static function activity_signup_add($data)
     {
+        if (!self::activity_signup_validate_data($data, true)) {
+            return false;
+        }
         global $wpdb;
         $table_name = $wpdb->prefix.'activity_signup';
 
         return $wpdb->insert($table_name, $data);
+    }
+
+    public static function activity_signup_frontend_add()
+    {
+        self::activity_signup_process_signup();
     }
 }

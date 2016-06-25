@@ -6,6 +6,8 @@ class Activity
 
     public static function activity_init()
     {
+        add_action('admin_post_activity_signup', array('Activity_Signup', 'activity_signup_frontend_add'));
+        add_action('admin_post_nopriv_activity_signup', array('Activity_Signup', 'activity_signup_frontend_add'));
         if (!self::$activity_initialed) {
             self::activity_init_hooks();
         }
