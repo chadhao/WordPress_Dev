@@ -5,7 +5,7 @@ $activity_result = $wpdb->get_var("SELECT signup_time FROM $table_name WHERE pos
 $activity_signup_time = new DateTime($activity_result);
 $datetime_now = new DateTime(current_time('mysql'));
 ?>
-<div class="fusion-row" style="margin: 0;max-width: 500px;">
+<div class="fusion-row" style="margin: 0;max-width: 600px;">
     <h4 style="border-bottom: 1px solid #aaa;">活动报名</h4>
     <?php
     if ($datetime_now > $activity_signup_time):
