@@ -1,5 +1,17 @@
+<?php
+global $wpdb;
+$table_name = $wpdb->prefix.'activity_meta';
+$activity_result = $wpdb->get_var("SELECT signup_time FROM $table_name WHERE post_id = $post->ID");
+$activity_signup_time = new DateTime($activity_result);
+$datetime_now = new DateTime(current_time('mysql'));
+?>
 <div class="fusion-row" style="margin: 0;max-width: 500px;">
     <h4 style="border-bottom: 1px solid #aaa;">活动报名</h4>
+    <?php
+    if ($datetime_now > $activity_signup_time):
+        echo '<p>该活动线上报名已截止！线下报名以及关于活动的其他问题，请联系活动负责人。</p>';
+    else:
+    ?>
     <style type="text/css">
     .activity_signup_form p span input {
         margin: 0;
@@ -58,4 +70,5 @@
         </p>
         <p><button type="submit">报名</button></p>
     </form>
+    <?php endif; ?>
 </div>
