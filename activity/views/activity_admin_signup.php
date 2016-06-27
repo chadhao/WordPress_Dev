@@ -6,7 +6,6 @@ $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
 if (!$add_new) {
     $signup = Activity_Signup::activity_signup_get_signup(intval($_GET['signup_id']));
 }
-
 ?>
 
 <div class="wrap">
