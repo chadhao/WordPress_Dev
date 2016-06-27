@@ -293,7 +293,7 @@ class Activity_Admin
     public static function activity_admin_process_post()
     {
         if (self::activity_admin_is_field_empty()) {
-            echo '<script type="text/javascript">alert("除活动海报收费外，其他项目均为必填！\n请检查表单是否填写完整！"); window.history.back();</script>';
+            echo '<script type="text/javascript">alert("除活动海报、收费和最大人数外，其他项目均为必填！\n请检查表单是否填写完整！"); window.history.back();</script>';
         } else {
             if (wp_verify_nonce($_GET['_wpnonce'], self::NONCE) && $_POST['is_new'] == 1) {
                 if (self::activity_admin_insert_post(self::activity_admin_process_post_data_array())) {

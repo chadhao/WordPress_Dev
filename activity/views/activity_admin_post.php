@@ -40,14 +40,14 @@ if (!$add_new) {
 					<div id="activity_datetime">
 						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" name="activity_date" id="activity_date" placeholder="请选择活动日期" value="<?php echo !$add_new ? $the_post_meta_activity_date : ''; ?>" class="am-form-field" data-am-datepicker readonly></span>
 						<select name="activity_time" id="activity_time" data-am-selected="{maxHeight: 200}">
-							<?php
-                  for ($i = 0; $i < 144; ++$i) {
-                      $the_time = sprintf('%02d', floor($i / 6)).':'.sprintf('%02d', floor($i % 6 * 10));
-                      echo '<option value="'.$the_time.':00"';
-                      echo $the_time == $the_post_meta_activity_time ? ' selected>' : '>';
-                      echo $the_time.'</option>';
-                  }
-              ?>
+                        <?php
+                        for ($i = 0; $i < 144; ++$i) {
+                            $the_time = sprintf('%02d', floor($i / 6)).':'.sprintf('%02d', floor($i % 6 * 10));
+                            echo '<option value="'.$the_time.':00"';
+                            echo $the_time == $the_post_meta_activity_time ? ' selected>' : '>';
+                            echo $the_time.'</option>';
+                        }
+                        ?>
 						</select>
 					</div>
 				</div>
@@ -62,19 +62,24 @@ if (!$add_new) {
 					<input type="text" name="fee_nonmember" id="fee_nonmember" placeholder="请填写活动费用，免费请留空" value="<?php echo !$add_new ? $the_post_meta->nonmember_fee : ''; ?>">
 				</div>
 
+                <div class="am-form-group am-g">
+					<label for="max_capacity">最大参与人数 <span class="am-badge am-round">选填</span></label>
+					<input type="text" name="max_capacity" id="max_capacity" placeholder="请填写最大参与人数，不限人数请留空" value="<?php echo !$add_new ? $the_post_meta->max_capacity : ''; ?>">
+				</div>
+
 				<div class="am-form-group am-g">
 					<label for="signup_datetime">报名截止时间 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<div id="signup_datetime">
 						<span class="am-u-sm-2" style="padding-left: 0;"><input type="text" name="signup_date" id="signup_date" placeholder="请选择报名截止日期" value="<?php echo !$add_new ? $the_post_meta_signup_date : ''; ?>" class="am-form-field" data-am-datepicker readonly></span>
 						<select name="signup_time" id="signup_time" data-am-selected="{maxHeight: 200}">
-							<?php
-                  for ($i = 0; $i < 144; ++$i) {
-                      $the_time = sprintf('%02d', floor($i / 6)).':'.sprintf('%02d', floor($i % 6 * 10));
-                      echo '<option value="'.$the_time.':00"';
-                      echo $the_time == $the_post_meta_signup_time ? ' selected>' : '>';
-                      echo $the_time.'</option>';
-                  }
-              ?>
+						<?php
+                            for ($i = 0; $i < 144; ++$i) {
+                                $the_time = sprintf('%02d', floor($i / 6)).':'.sprintf('%02d', floor($i % 6 * 10));
+                                echo '<option value="'.$the_time.':00"';
+                                echo $the_time == $the_post_meta_signup_time ? ' selected>' : '>';
+                                echo $the_time.'</option>';
+                            }
+                        ?>
 						</select>
 					</div>
 				</div>
@@ -92,8 +97,8 @@ if (!$add_new) {
 				<div class="am-form-group am-g">
 					<label for="activity_detail">活动详情 <span class="am-badge am-badge-danger am-round">必填</span></label>
 					<?php
-              wp_editor(!$add_new ? $the_post->post_content : '', 'activity_detail');
-          ?>
+                        wp_editor(!$add_new ? $the_post->post_content : '', 'activity_detail');
+                    ?>
 				</div>
 
 				<p style="float: right;"><button type="submit" class="am-btn am-btn-primary am-radius">提交</button></p>
