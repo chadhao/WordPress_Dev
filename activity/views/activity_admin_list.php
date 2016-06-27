@@ -33,7 +33,7 @@ $all_activity = get_posts($activity_args);
                 if ($activity_capacity == 0) {
                     echo '<td style="color: #00ff00;">'.$activity_signup_count.'</td>';
                 } else {
-                    echo '<td'.($activity_signup_count / $activity_capacity > 0.9 ? ' style="color: #ff0000;"' : ' style="color: #00ff00;"').'>'.$activity_signup_count.' / '.$activity_capacity.'</td>';
+                    echo '<td'.($activity_signup_count / $activity_capacity >= 0.9 ? ' style="color: #ff0000;"' : ' style="color: #00ff00;"').'>'.$activity_signup_count.' / '.$activity_capacity.'</td>';
                 }
                 echo '<td>'.$activity->post_modified.'</td>'.
                      '<td><a href="'.esc_url(Activity_Admin::activity_admin_get_url('activity_admin_edit_post', $activity->ID)).'">编辑</a> | <a href="'.esc_url(Activity_Admin::activity_admin_get_url('activity_admin_delete_post', $activity->ID)).'">删除</a></td>'.
