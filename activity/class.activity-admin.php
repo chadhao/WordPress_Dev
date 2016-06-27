@@ -167,7 +167,7 @@ class Activity_Admin
     private static function activity_admin_is_field_empty()
     {
         foreach ($_POST as $key => $value) {
-            if ($key == 'poster' || $key == 'fee_member' || $key == 'fee_nonmember') {
+            if ($key == 'poster' || $key == 'fee_member' || $key == 'fee_nonmember' || $key == 'max_capacity') {
                 continue;
             }
             if (empty($value)) {
@@ -183,7 +183,7 @@ class Activity_Admin
         $data_array = array();
         $is_new = $_POST['is_new'] == 1 ? true : false;
         foreach ($_POST as $key => $value) {
-            if (($key == 'fee_member' || $key == 'fee_nonmember') && empty(intval($value))) {
+            if (($key == 'fee_member' || $key == 'fee_nonmember' || $key == 'max_capacity') && empty(intval($value))) {
                 $data_array[$key] = 0;
                 continue;
             }
@@ -218,6 +218,7 @@ class Activity_Admin
             'nonmember_fee' => $data['fee_nonmember'],
             'signup_time' => $data['signup_time'],
             'signup_method' => $data['signup_method'],
+            'max_capacity' => $data['max_capacity'],
             'activity_time' => $data['activity_time'],
             'poster' => $data['poster'],
         );
@@ -272,6 +273,7 @@ class Activity_Admin
                 'nonmember_fee' => $data['fee_nonmember'],
                 'signup_time' => $data['signup_time'],
                 'signup_method' => $data['signup_method'],
+                'max_capacity' => $data['max_capacity'],
                 'activity_time' => $data['activity_time'],
                 'poster' => $data['poster'],
             );
@@ -291,7 +293,7 @@ class Activity_Admin
     public static function activity_admin_process_post()
     {
         if (self::activity_admin_is_field_empty()) {
-            echo '<script type="text/javascript">alert("除活动海报和收费外，其他项目均为必填！\n请检查表单是否填写完整！"); window.history.back();</script>';
+            echo '<script type="text/javascript">alert("除活动海报收费外，其他项目均为必填！\n请检查表单是否填写完整！"); window.history.back();</script>';
         } else {
             if (wp_verify_nonce($_GET['_wpnonce'], self::NONCE) && $_POST['is_new'] == 1) {
                 if (self::activity_admin_insert_post(self::activity_admin_process_post_data_array())) {
@@ -316,5 +318,17 @@ class Activity_Admin
     {
         self::activity_admin_display_message('error', '请通过活动插件添加/编辑活动！');
         Activity::activity_view('activity_admin_list');
+    }
+
+    public static function activity_admin_get_capacity($post_id = 0)
+    {
+        if ($post_id == 0) {
+            return 0;
+        }
+        global $wpdb;
+        $table_name = $wpdb->prefix.'activity_meta';
+        $count = $wpdb->get_var("SELECT max_capacity FROM $table_name WHERE post_id = $post_id");
+
+        return is_null($count) ? 0 : intval($count);
     }
 }
