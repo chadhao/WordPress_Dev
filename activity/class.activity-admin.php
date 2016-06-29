@@ -127,8 +127,6 @@ class Activity_Admin
         Activity::activity_view('activity_admin_setting');
     }
 
-    //need to be refactored!
-    //delete activity in both post and activity_meta
     public static function activity_admin_delete_post()
     {
         if (!isset($_GET['post_id']) || !wp_verify_nonce($_GET['_wpnonce'], self::NONCE)) {
