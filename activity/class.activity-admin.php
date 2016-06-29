@@ -131,15 +131,24 @@ class Activity_Admin
     //delete activity in both post and activity_meta
     public static function activity_admin_delete_post()
     {
-        if (wp_verify_nonce($_GET['_wpnonce'], self::NONCE) && isset($_GET['post_id'])) {
-            $post_deleted = wp_delete_post($_GET['post_id'], true);
-            if (!is_bool($post_deleted)) {
-                self::activity_admin_display_message('updated', '活动删除成功！');
-            } else {
-                self::activity_admin_display_message('error', '删除活动失败！');
-            }
-        } else {
+        if (!isset($_GET['post_id']) || !wp_verify_nonce($_GET['_wpnonce'], self::NONCE)) {
             self::activity_admin_display_message('error', '非法请求！');
+        } else {
+            $the_post = get_post(intval($_GET['post_id']));
+            if (!empty($the_post)) {
+                global $wpdb;
+                $table_name = $wpdb->prefix.'activity_meta';
+                $signup_delete = Activity_Signup::activity_signup_delete_all(intval($_GET['post_id']));
+                $actiity_meta_delete = $wpdb->delete($table_name, array('post_id' => intval($_GET['post_id'])));
+                $post_deleted = wp_delete_post(intval($_GET['post_id']), true);
+                if (!is_bool($post_deleted) && !empty($signup_delete) && !empty($actiity_meta_delete)) {
+                    self::activity_admin_display_message('updated', '活动删除成功！');
+                } else {
+                    self::activity_admin_display_message('error', '删除活动失败！');
+                }
+            } else {
+                self::activity_admin_display_message('error', '非法请求！');
+            }
         }
 
         Activity::activity_view('activity_admin_list');

@@ -43,6 +43,14 @@ class Activity_Signup
         return $signup;
     }
 
+    public static function activity_signup_delete_all($post_id)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix.'activity_signup';
+
+        return $wpdb->delete($table_name, array('activity_id' => $post_id));
+    }
+
     public static function activity_signup_delete()
     {
         if (!isset($_GET['signup_id']) || $_GET['signup_id'] == 0) {
