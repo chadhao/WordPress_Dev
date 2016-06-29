@@ -135,7 +135,7 @@ class Activity_Signup
         if (!is_numeric($data['phone']) || strlen($data['phone']) > 15) {
             return false;
         }
-        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        if (!empty($data['email']) && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             return false;
         }
         global $wpdb;
