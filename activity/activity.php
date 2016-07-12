@@ -3,7 +3,7 @@
 Plugin Name: Activity
 Plugin URI: http://autcsa.nz/
 Description: This is the Activity plugin developed specially for AUTCSA.
-Version: 1.0.2
+Version: 1.0.3
 Author: Chad Hao
 Author URI: http://chadhao.com/
 License: GPLv2
@@ -21,6 +21,7 @@ define('ACTIVITY__PLUGIN_DIR', plugin_dir_path(__FILE__));
 
 register_activation_hook(__FILE__, array('Activity', 'activity_activation'));
 register_deactivation_hook(__FILE__, array('Activity', 'activity_deactivation'));
+register_uninstall_hook(__FILE__, array('Activity', 'activity_uninstall'));
 
 require_once ACTIVITY__PLUGIN_DIR.'class.activity.php';
 require_once ACTIVITY__PLUGIN_DIR.'class.activity-signup.php';
@@ -31,10 +32,3 @@ if (is_admin()) {
     require_once ACTIVITY__PLUGIN_DIR.'class.activity-admin.php';
     add_action('init', array('Activity_Admin', 'activity_admin_init'));
 }
-
-// Code blow enables debug message output during plugin activation.
-// add_action('activated_plugin', 'my_save_error');
-// function my_save_error()
-// {
-//     file_put_contents(ACTIVITY__PLUGIN_DIR.'error_activation.html', ob_get_contents());
-// }

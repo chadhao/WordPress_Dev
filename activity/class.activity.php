@@ -2,15 +2,10 @@
 
 class Activity
 {
-    private static $activity_initialed = false;
-
     public static function activity_init()
     {
         add_action('admin_post_activity_signup', array('Activity_Signup', 'activity_signup_frontend_add'));
         add_action('admin_post_nopriv_activity_signup', array('Activity_Signup', 'activity_signup_frontend_add'));
-        if (!self::$activity_initialed) {
-            self::activity_init_hooks();
-        }
     }
 
     public static function activity_activation()
@@ -122,13 +117,6 @@ class Activity
             dbDelta( $activity_signup_sql );
         }
         */
-    }
-
-    /**
-     * Initialize wordpress hooks.
-     */
-    private static function activity_init_hooks()
-    {
     }
 
     public static function activity_view($file_name)
