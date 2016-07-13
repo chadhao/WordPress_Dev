@@ -4,18 +4,18 @@ class Activity_Admin
 {
     const NONCE = 'activity_admin_key';
 
-    private static $activity_admin_initialed = false;
+    private static $activity_admin_initialized = false;
 
     public static function activity_admin_init()
     {
-        if (!self::$activity_admin_initialed) {
+        if (!self::$activity_admin_initialized) {
             self::activity_admin_init_hooks();
         }
     }
 
     public static function activity_admin_init_hooks()
     {
-        self::$activity_admin_initialed = true;
+        self::$activity_admin_initialized = true;
         add_action('admin_menu', array('Activity_Admin', 'activity_admin_load_menu'));
     }
 
