@@ -43,28 +43,18 @@ class Activity
 
     public static function activity_uninstall()
     {
-    }
-
-    /**
-     * Determining if required table exists.
-     *
-     * @global type $wpdb
-     *
-     * @return bool
-     */
-    /*
-    private static function activity_is_table_created( $activity_table_name ) {
         global $wpdb;
-        $activity_table_dbname = DB_NAME;
-        $activity_table_sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '$activity_table_dbname' AND table_name = '$activity_table_name'";
-        $activity_table_count = $wpdb->get_var( $activity_table_sql );
-
-        if ( $activity_table_count > 0 ) {
-            return true;
+        $tablename_signup = $wpdb->prefix.'activity_signup';
+        $tablename_meta = $wpdb->prefix.'activity_meta';
+        $current_cat = get_option('activity_category');
+        $args = array('category' => $current_cat);
+        $posts_array = get_posts($args);
+        foreach ($posts_array as $post) {
+            $wpdb->delete($tablename_signup, array('activity_id' => $post->ID));
+            $wpdb->delete($tablename_meta, array('post_id' => $post->ID));
+            wp_delete_post($post->id, true);
         }
-        return false;
     }
-    */
 
     /**
      * Initialize plugin database.
@@ -108,15 +98,6 @@ class Activity
 
         dbDelta($activity_meta_sql);
         dbDelta($activity_signup_sql);
-
-        /*
-        if ( ! self::activity_is_table_created( $activity_table_name_meta ) ) {
-            dbDelta( $activity_meta_sql );
-        }
-        if ( ! self::activity_is_table_created( $activity_table_name_signup ) ) {
-            dbDelta( $activity_signup_sql );
-        }
-        */
     }
 
     public static function activity_view($file_name)
