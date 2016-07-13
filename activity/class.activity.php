@@ -28,10 +28,8 @@ class Activity
             } else {
                 update_option('activity_category', $activity_init_terms[0]->term_id);
             }
-            update_option('activity_signup_method', '');
         } else {
             update_option('activity_category', 0);
-            update_option('activity_signup_method', '');
         }
 
         self::activity_init_database();
@@ -47,13 +45,27 @@ class Activity
         $tablename_signup = $wpdb->prefix.'activity_signup';
         $tablename_meta = $wpdb->prefix.'activity_meta';
         $current_cat = get_option('activity_category');
+        $post_id = self::activity_get_all_activity_id($current_cat);
+        foreach ($post_id as $id) {
+            $wpdb->delete($tablename_signup, array('activity_id' => $id));
+            $wpdb->delete($tablename_meta, array('post_id' => $id));
+            wp_delete_post($id);
+        }
+        delete_option('activity_category');
+        $wpdb->query('DROP TABLE IF EXISTS '.$tablename_signup);
+        $wpdb->query('DROP TABLE IF EXISTS '.$tablename_meta);
+    }
+
+    private static function activity_get_all_activity_id($current_cat)
+    {
         $args = array('category' => $current_cat);
         $posts_array = get_posts($args);
+        $post_id_array = array();
         foreach ($posts_array as $post) {
-            $wpdb->delete($tablename_signup, array('activity_id' => $post->ID));
-            $wpdb->delete($tablename_meta, array('post_id' => $post->ID));
-            wp_delete_post($post->id, true);
+            $post_id_array[] = $post->ID;
         }
+
+        return $post_id_array;
     }
 
     /**

@@ -96,9 +96,9 @@ class Activity_Signup
         } else {
             if (isset($_POST['frontend']) && $_POST['frontend'] == 1) {
                 if (self::activity_signup_add(self::activity_singup_prepare_data())) {
-                    header('Location: '.get_site_url().'//activity_signup_success');
+                    header('Location: '.get_page_link(1620));
                 } else {
-                    header('Location: '.get_site_url().'//activity_signup_error');
+                    header('Location: '.get_page_link(1623));
                 }
                 exit();
             } elseif (wp_verify_nonce($_GET['_wpnonce'], Activity_Admin::NONCE) && $_POST['is_new'] == 1) {
