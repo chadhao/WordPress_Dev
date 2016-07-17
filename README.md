@@ -1,2 +1,2 @@
-# WordPress_Plugin_AUTCSA_activity
-This is the Activity plugin developed specially for autcsa.nz.
+# WordPress_Dev
+This is the repository to store plugins and customizations developed for WordPress.
