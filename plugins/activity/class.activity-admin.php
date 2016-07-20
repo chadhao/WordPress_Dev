@@ -139,7 +139,7 @@ class Activity_Admin
                 $signup_delete = Activity_Signup::activity_signup_delete_all(intval($_GET['post_id']));
                 $actiity_meta_delete = $wpdb->delete($table_name, array('post_id' => intval($_GET['post_id'])));
                 $post_deleted = wp_delete_post(intval($_GET['post_id']), true);
-                if (!is_bool($post_deleted) && !empty($signup_delete) && !empty($actiity_meta_delete)) {
+                if ($post_deleted !== false && !empty($signup_delete) && !empty($actiity_meta_delete)) {
                     self::activity_admin_display_message('updated', '活动删除成功！');
                 } else {
                     self::activity_admin_display_message('error', '删除活动失败！');
