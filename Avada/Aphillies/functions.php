@@ -31,11 +31,12 @@ add_shortcode('ac_list_info', 'ac_list_info');
 
 function ac_homepage_time()
 {
-    $content = '<div class="clear-fix" style="width: 100%; height: 232px; overflow: hidden;">';
-    $content .= '<h2 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">北京时间</h3>';
-    $content .= '<p id="ac_homepage_time_bj" style="margin-bottom: 10px; font-size: 18px; line-height: 26px;">0000-00-00<br>00:00:00</p>';
-    $content .= '<h2 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">奥克兰时间</h3>';
-    $content .= '<p id="ac_homepage_time_akl" style="margin-bottom: 10px; font-size: 18px; line-height: 26px;">0000-00-00<br>00:00:00</p>';
+    $content = '<div id="ac_homepage_time" class="clear-fix" style="width: 100%; height: 232px; background: rgba(0,0,0,0.1); overflow: hidden;">';
+    $content .= '<p style="margin: 0; padding: 10px; text-align: center; background: rgba(0,0,0,0.1); font-weight: 400; font-size: 14px; line-height: 14px;">当前时间</p>';
+    $content .= '<div style="margin: 0; padding: 0; width: 50%; float: left;"><h3 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">北京时间</h3>';
+    $content .= '<p id="ac_homepage_time_bj" style="font-size: 22px; line-height: 36px;">0000-00-00<br>00:00:00</p></div>';
+    $content .= '<div style="margin: 0; padding: 0; width: 50%; float: right;"><h3 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">奥克兰时间</h3>';
+    $content .= '<p id="ac_homepage_time_akl" style="font-size: 22px; line-height: 36px;">0000-00-00<br>00:00:00</p></div>';
     $content .= '</div>';
 
     return $content;
@@ -60,7 +61,7 @@ function ac_homepage_exchange()
     if ($last_update !== false) {
         $dt_now = (new DateTime())->getTimestamp();
         $dt_last_update = (new DateTime($last_update))->getTimestamp();
-        if ($dt_now - $dt_last_update > 86400000) {
+        if ($dt_now - $dt_last_update > 86400) {
             update_option('ac_exchange_rate_update', date('Y-m-d H:i:s'));
             update_option('ac_exchange_rate', ac_homepage_exchange_fetch());
         }
@@ -70,10 +71,11 @@ function ac_homepage_exchange()
     }
     $rate_now = get_option('ac_exchange_rate');
 
-    $content = '<div class="clear-fix" style="width: 100%; height: 232px; overflow: hidden;">';
-    $content .= '<h2 style="margin-top: 25px; margin-bottom: 0; color: #ffffff;">￥'.(100 * $rate_now).'人民币</h3>';
-    $content .= '<h2 style="margin-top: 25px; margin-bottom: 0; color: #ffffff;">兑换</h3>';
-    $content .= '<h2 style="margin-top: 25px; margin-bottom: 0; color: #ffffff;">$100新西兰元</h3>';
+    $content = '<div id="ac_homepage_exchange" class="clear-fix" style="width: 100%; height: 232px; background: rgba(0,0,0,0.1); overflow: hidden;">';
+    $content .= '<p style="margin: 0; padding: 10px; text-align: center; background: rgba(0,0,0,0.1); font-weight: 400; font-size: 14px; line-height: 14px;">实时汇率</p>';
+    $content .= '<h2 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">￥'.(100 * $rate_now).'人民币</h3>';
+    $content .= '<h2 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">兑换</h3>';
+    $content .= '<h2 style="margin-top: 20px; margin-bottom: 0; color: #ffffff;">$100新西兰元</h3>';
     $content .= '</div>';
 
     return $content;
