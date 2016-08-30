@@ -96,7 +96,9 @@
 						$activity_time = new DateTime($activity_result->activity_time);
 						$activity_signup_time = new DateTime($activity_result->signup_time);
 						$datetime_now = new DateTime(current_time('mysql'));
-
+				?>
+                		<div id="activity_mobile_button" class="fusion-button-wrapper"><style type="text/css" scoped="scoped">.fusion-button.button-1 .fusion-button-text, .fusion-button.button-1 i {color:#50586b;}.fusion-button.button-1 {border-width:1px;border-color:#50586b;}.fusion-button.button-1 .fusion-button-icon-divider{border-color:#50586b;}.fusion-button.button-1:hover .fusion-button-text, .fusion-button.button-1:hover i,.fusion-button.button-1:focus .fusion-button-text, .fusion-button.button-1:focus i,.fusion-button.button-1:active .fusion-button-text, .fusion-button.button-1:active{color:#50586b;}.fusion-button.button-1:hover, .fusion-button.button-1:focus, .fusion-button.button-1:active{border-width:1px;border-color:#50586b;}.fusion-button.button-1:hover .fusion-button-icon-divider, .fusion-button.button-1:hover .fusion-button-icon-divider, .fusion-button.button-1:active .fusion-button-icon-divider{border-color:#50586b;}.fusion-button.button-1{background: #ffffff;}.fusion-button.button-1:hover,.button-1:focus,.fusion-button.button-1:active{background: #eeeeee;}.fusion-button.button-1{width:100%;}</style><a class="fusion-button button-flat button-round button-large button-custom button-1" target="_self" href="#activity_signup"><i class="fa fa-pencil button-icon-left"></i><span class="fusion-button-text">点我报名！</span></a></div>
+                <?php
 						echo '<div id="activity_content">';
 						if ( !empty( $activity_result->poster ) ) {
 							echo '<p style="margin: 0 auto; max-width: 600px; text-align: center;"><img src="' . $activity_result->poster . '"></p>';
@@ -110,7 +112,7 @@
 						echo '<p><strong>活动详情：</strong></p>';
 						the_content();
 				?>
-						<div class="fusion-row" style="margin: 0;max-width: 600px;">
+						<div id="activity_signup" class="fusion-row">
 						    <h4 style="border-bottom: 1px solid #aaa;">活动报名</h4>
 						    <?php
 						    if ($datetime_now > $activity_signup_time):
